@@ -1,5 +1,8 @@
 # Copier configuration
 _subdirectory: template
+_env_ops:
+  variable_start_string: "[["
+  variable_end_string: "]]"
 
 # Initial message displayed to user before copying files.
 _message_before_copy: |
@@ -46,7 +49,7 @@ with_automate_dv:
 
 # Message displayed to user after copying files.
 _message_after_copy: |
-  Your new project has been created in the '{{ project_name_kecab_case }}' directory!
+  Your new project has been created in the '[[ project_name_kecab_case ]]' directory!
 
   Refer to the README.md file for full "getting started" guide and production setup instructions.
 
@@ -64,7 +67,7 @@ bundle_uuid:
     {% set r4 = "%04x" % (range(0, 65535) | random) -%}
     {% set r5 = "%04x" % (range(0, 65535) | random) -%}
     {% set r6 = "%04x" % (range(0, 65535) | random) -%}
-    {{ r1 }}{{ r2 }}-{{ r3 }}-{{ v4 }}-{{ var }}-{{ r4 }}{{ r5 }}{{ r6 }}
+    [[ r1 ]][[ r2 ]]-[[ r3 ]]-[[ v4 ]]-[[ var ]]-[[ r4 ]][[ r5 ]][[ r6 ]]
 
 databricks_serverless_environment_version:
   when: false
@@ -119,4 +122,4 @@ project_name_kecab_case:
   type: str
   help: "Project name in kebab-case."
   default: >-
-    {{ project_name | replace('_', '-') | lower }}
+    [[ project_name | replace('_', '-') | lower ]]

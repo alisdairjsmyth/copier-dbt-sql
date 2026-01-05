@@ -3,18 +3,18 @@ requires = ["uv_build>=0.9.18,<0.10.0"]
 build-backend = "uv_build"
 
 [project]  # https://packaging.python.org/en/latest/specifications/pyproject-toml/
-name = "{{ project_name_kebab_case }}"
+name = "[[ project_name_kebab_case ]]"
 version = "0.0.0"
-description = "Data Product: {{ project_name }}"
+description = "Data Product: [[ project_name ]]"
 readme = "README.md"
 requires-python = ">=3.11,<4.0"
 dependencies = [
-  "{{ dbt_databricks_dependency }}",
+  "[[ dbt_databricks_dependency ]]",
 ]
 
 [project.urls]  # https://packaging.python.org/en/latest/specifications/well-known-project-urls/#well-known-labels
-#homepage = "{{ project_url }}"
-#source = "{{ project_url }}"
+#homepage = "[[ project_url ]]"
+#source = "[[ project_url ]]"
 
 [dependency-groups]  # https://docs.astral.sh/uv/concepts/projects/dependencies/#development-dependencies
 dev = [

@@ -16,7 +16,7 @@ repos:
     rev: 3.5.0
     hooks:
       - id: sqlfluff-lint
-        additional_dependencies: ['{{ dbt_databricks_dependency }}', 'sqlfluff-templater-dbt']
+        additional_dependencies: ['[[ dbt_databricks_dependency ]]', 'sqlfluff-templater-dbt']
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.14.10

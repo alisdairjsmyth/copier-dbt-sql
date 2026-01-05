@@ -1,7 +1,7 @@
 resources:
   jobs:
-    {{ project_name }}_job:
-      name: {{ project_name }}_job
+    [[ project_name ]]_job:
+      name: [[ project_name ]]_job
 
       tasks:
         - task_key: dbt
@@ -18,8 +18,8 @@ resources:
       environments:
         - environment_key: default
           spec:
-            environment_version: {{ databricks_serverless_environment_version }}
+            environment_version: [[ databricks_serverless_environment_version ]]
             dependencies:
-              - {{ dbt_databricks_dependency }}
+              - [[ dbt_databricks_dependency ]]
 
       # Extend the definition of the job here e.g. add scheduling with trigger attribute

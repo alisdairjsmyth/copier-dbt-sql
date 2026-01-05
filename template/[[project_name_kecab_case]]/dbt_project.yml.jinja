@@ -1,4 +1,4 @@
-name: '{{ project_name }}'
+name: '[[ project_name ]]'
 version: '0.0.0'
 config-version: 2
 
@@ -20,7 +20,7 @@ clean-targets: # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 models:
-  {{ project_name }}:
+  [[ project_name ]]:
 {%- if with_dbt_artifacts %}
 
 on-run-end:
