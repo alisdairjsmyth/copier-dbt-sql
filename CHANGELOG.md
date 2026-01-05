@@ -1,3 +1,9 @@
+## v0.3.4 (2026-01-05)
+
+### Fix
+
+- remove python-certifi-win32 dependency from template
+
 ## v0.3.3 (2026-01-05)
 
 ### Fix
