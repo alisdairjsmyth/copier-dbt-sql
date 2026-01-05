@@ -1,0 +1,11 @@
+# Establishing a new data product
+`cd {{ project_name }}`
+`git init`
+`uv venv`
+`.venv\Scripts\activate`
+`uv sync --group dev`
+`dbt init`
+`pre-commit install`
+`git add .`
+`pre-commit run --all-files`
+`git commit -m ""`

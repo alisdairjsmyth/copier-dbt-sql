@@ -1,0 +1,122 @@
+# Copier configuration
+_subdirectory: template
+
+# Initial message displayed to user before copying files.
+_message_before_copy: |
+  Copier template for creating a dbt project configured for Databricks.
+
+# Prompted variables for the template.
+project_name:
+  type: str
+  help: Please provide a unique name for this project.
+  default: dbt_project
+  validator: >-
+    {% if not (project_name | regex_search('^[A-Za-z_][A-Za-z0-9-_]+$')) %}
+    Name must consist of letters, numbers, dashes, and underscores.
+    {% endif %}
+
+data_product_schema:
+  type: str
+  help: Please provide the name of the schema for the data product.
+  default: default
+  validator: >-
+    {% if not (data_product_schema | regex_search('^\\w+$')) %}
+    Invalid schema name.
+    {% endif %}
+
+with_dbt_utils:
+  type: bool
+  help: Include dbt-labs/dbt_utils package in the project?
+  default: true
+
+with_dbt_artifacts:
+  type: bool
+  help: Include brooklyn-data/dbt_artifacts package in the project?
+  default: true
+
+with_dbt_expectations:
+  type: bool
+  help: Include metaplane/dbt_expectations package in the project?
+  default: false
+
+with_automate_dv:
+  type: bool
+  help: Include datavault-uk/automate_dv package in the project?
+  default: false
+
+# Message displayed to user after copying files.
+_message_after_copy: |
+  Your new project has been created in the '{{ project_name }}' directory!
+
+  Refer to the README.md file for full "getting started" guide and production setup instructions.
+
+# Static and generated variables used in the template files.
+bundle_uuid:
+  when: false
+  type: str
+  help: "Unique identifier for this data product bundle"
+  default: >-
+    {% set r1 = "%04x" % (range(0, 65535) | random) -%}
+    {% set r2 = "%04x" % (range(0, 65535) | random) -%}
+    {% set r3 = "%04x" % (range(0, 65535) | random) -%}
+    {% set v4 = "%04x" % (range(16384, 20479) | random) -%}
+    {% set var = "%04x" % (range(32768, 49151) | random) -%}
+    {% set r4 = "%04x" % (range(0, 65535) | random) -%}
+    {% set r5 = "%04x" % (range(0, 65535) | random) -%}
+    {% set r6 = "%04x" % (range(0, 65535) | random) -%}
+    {{ r1 }}{{ r2 }}-{{ r3 }}-{{ v4 }}-{{ var }}-{{ r4 }}{{ r5 }}{{ r6 }}
+
+databricks_serverless_environment_version:
+  when: false
+  type: str
+  help: "Databricks serverless environment version."
+  default: "4"
+
+dbt_databricks_dependency:
+  when: false
+  type: str
+  help: "dbt-databricks dependency definition."
+  default: "dbt-databricks>=1.10.0, <1.11.0"
+
+dev_catalog:
+  when: false
+  type: str
+  help: "Name of the development catalog - common"
+  default: dev_dbt
+
+dev_sql_warehouse_name:
+  when: false
+  type: str
+  help: "Name of SQL warehouse for the development environment - common"
+  default: Serverless Starter Warehouse
+
+dev_workspace_host:
+  when: false
+  type: str
+  help: "Databricks workspace ID for the development environment - common"
+  default: https://dbc-97f40495-e782.cloud.databricks.com
+
+prd_catalog:
+  when: false
+  type: str
+  help: "Name of the production catalog - common"
+  default: prd_dbt
+
+prd_sql_warehouse_name:
+  when: false
+  type: str
+  help: "Name of SQL warehouse for the production environment - common"
+  default: Serverless Starter Warehouse
+
+prd_workspace_host:
+  when: false
+  type: str
+  help: "Databricks workspace ID for the production environment - common"
+  default: https://dbc-97f40495-e782.cloud.databricks.com
+
+project_name_kecab_case:
+  when: false
+  type: str
+  help: "Project name in kebab-case."
+  default: >-
+    {{ project_name | replace('_', '-') | lower }}

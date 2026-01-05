@@ -1,0 +1,26 @@
+[build-system]  # https://docs.astral.sh/uv/concepts/build-backend/
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"
+
+[project]  # https://packaging.python.org/en/latest/specifications/pyproject-toml/
+name = "copier-dbt-sql"
+version = "0.0.0"
+description = "A Copier template for scaffolding dbt SQL projects targeting Databricks."
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+dependencies = [
+]
+
+[dependency-groups]  # https://docs.astral.sh/uv/concepts/projects/dependencies/#development-dependencies
+dev = [
+  "commitizen>=4.3.0,<5.0.0",
+  "pre-commit>=4.5.0, <5.0.0",
+]
+
+# --- Commitizen Configuration ---
+[tool.commitizen]  # https://commitizen-tools.github.io/commitizen/config/configuration_file/
+version_provider = "uv"
+tag_format = "v${version}"
+version_files = [
+  "pyproject.toml:version",
+]

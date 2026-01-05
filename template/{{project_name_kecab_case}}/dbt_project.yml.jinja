@@ -1,0 +1,23 @@
+name: '{{ project_name }}'
+version: '0.0.0'
+config-version: 2
+
+# A common profile is used for all data products
+profile: vg_data_hub
+
+# These configurations specify where dbt should look for different types of files.
+# For Databricks asset bundles, we put everything in src, as you may have
+# non-dbt resources in your project.
+model-paths: ["src/models"]
+analysis-paths: ["src/analyses"]
+test-paths: ["src/tests"]
+seed-paths: ["src/seeds"]
+macro-paths: ["src/macros"]
+snapshot-paths: ["src/snapshots"]
+
+clean-targets: # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+models:
+  {{ project_name }}:

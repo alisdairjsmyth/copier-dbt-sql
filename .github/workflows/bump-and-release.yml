@@ -1,0 +1,33 @@
+name: Bump and release
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  bump-and-release:
+    # Prevent infinite loop by checking the commit message
+    if: "!startsWith(github.event.head_commit.message, 'bump:')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }} # Required to trigger subsequent actions
+
+      - id: cz
+        name: Create bump and changelog
+        uses: commitizen-tools/commitizen-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # The action outputs the version created
+          tag_name: ${{ steps.cz.outputs.version }}
+          # Points to the newly created changelog section
+          body: ${{ steps.cz.outputs.changelog }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
