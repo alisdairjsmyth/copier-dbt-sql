@@ -46,7 +46,7 @@ with_automate_dv:
 
 # Message displayed to user after copying files.
 _message_after_copy: |
-  Your new project has been created in the '{{ project_name }}' directory!
+  Your new project has been created in the '{{ project_name_kecab_case }}' directory!
 
   Refer to the README.md file for full "getting started" guide and production setup instructions.
 
