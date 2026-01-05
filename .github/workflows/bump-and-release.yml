@@ -31,7 +31,5 @@ jobs:
         with:
           # The action outputs the version created
           tag_name: ${{ steps.cz.outputs.version }}
-          # Points to the newly created changelog section
-          body: ${{ steps.cz.outputs.changelog }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
