@@ -1,3 +1,9 @@
+## v0.3.1 (2026-01-05)
+
+### Fix
+
+- add commitizen dependency to template
+
 ## v0.3.0 (2026-01-05)
 
 ### Feat
