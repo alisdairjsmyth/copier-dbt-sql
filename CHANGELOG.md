@@ -1,3 +1,11 @@
+## v0.3.2 (2026-01-05)
+
+### Fix
+
+- avoid jinja conflict
+- add on-run-end for dbt_artifacts package
+- correct defaultInterpreterPath
+
 ## v0.3.1 (2026-01-05)
 
 ### Fix
