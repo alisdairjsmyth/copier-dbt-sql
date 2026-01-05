@@ -4,6 +4,10 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   bump-and-release:
     # Prevent infinite loop by checking the commit message
