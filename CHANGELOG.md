@@ -1,3 +1,13 @@
+## v0.2.0 (2026-01-05)
+
+### Feat
+
+- add github actions extension
+
+### Fix
+
+- correct message after copy
+
 ## v0.1.2 (2026-01-05)
 
 ### Fix
