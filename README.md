@@ -40,7 +40,7 @@ The template includes [Visual Studio Code](https://code.visualstudio.com/) confi
 ### Create a new dbt project
 To create a new project with this template, run:
 ```sh
-uvx copier copy gh:alisdairjsmyth/copier-dbt-sql
+uvx copier copy gh:alisdairjsmyth/copier-dbt-sql .
 ```
 
 ### Update the dbt project
