@@ -1,5 +1,6 @@
 # copier-dbt-sql
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
+
 This is an experimental [copier](https://github.com/copier-org/copier) template for [dbt](https://getdbt.com) projects deployed to [Databricks](https://www.databricks.com/) within a [Databricks Asset Bundle](https://docs.databricks.com/en/dev-tools/bundles/index.html). It's useful for scaffolding out a basic project structure and configuration with modern tooling quickly.
 
 It is based on the Databricks Asset Bundle [dbt-sql](https://github.com/databricks/cli/tree/main/libs/template/templates/dbt-sql). It leverages dbt-core for local development and relies on Databricks Asset Bundles for deployment (either manually or with CI/CD). In production, dbt is executed using Lakeflow Jobs.
@@ -47,3 +48,9 @@ To update the project to the latest template version, run:
 ```sh
 uvx copier update
 ```
+
+## Credit
+This project has been developed with reference to the following projects:
+- Databricks Asset Bundle [dbt-sql](https://github.com/databricks/cli/tree/main/libs/template/templates/dbt-sql) published by Databricks
+- The Copier template [superlinear-ai/substrate](https://github.com/superlinear-ai/substrate)
+- The Copier template [gwenwindflower/copier-dbt](https://github.com/gwenwindflower/copier-dbt)
