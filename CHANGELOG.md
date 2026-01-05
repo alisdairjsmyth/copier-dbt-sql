@@ -1,3 +1,13 @@
+## v0.3.0 (2026-01-05)
+
+### Feat
+
+- add github workflows
+
+### Fix
+
+- correct default interpreter path
+
 ## v0.2.0 (2026-01-05)
 
 ### Feat
