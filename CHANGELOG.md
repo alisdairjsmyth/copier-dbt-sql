@@ -1,3 +1,10 @@
+## 0.3.9 (2026-01-06)
+
+### Fix
+
+- restructure template
+- update subdirectory
+
 ## 0.3.8 (2026-01-06)
 
 ### Fix
