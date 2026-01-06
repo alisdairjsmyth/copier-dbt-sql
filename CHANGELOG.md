@@ -1,3 +1,14 @@
+## 0.4.0 (2026-01-06)
+
+### Feat
+
+- use environment variables
+- add environment isolation in development
+
+### Fix
+
+- include changelog in github release
+
 ## 0.3.10 (2026-01-06)
 
 ### Fix
