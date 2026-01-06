@@ -116,3 +116,11 @@ known-first-party = ["pyspark", "delta"]
 
 [tool.ruff.lint.pycodestyle]  # https://docs.astral.sh/ruff/settings/#lintpycodestyle
 max-doc-length = 100
+
+# --- Commitizen Configuration ---
+[tool.commitizen]  # https://commitizen-tools.github.io/commitizen/config/configuration_file/
+version_provider = "uv"
+tag_format = "v${version}"
+version_files = [
+  "pyproject.toml:version",
+]
