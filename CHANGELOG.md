@@ -1,3 +1,10 @@
+## 0.3.10 (2026-01-06)
+
+### Fix
+
+- include code block
+- update copy command
+
 ## 0.3.9 (2026-01-06)
 
 ### Fix
