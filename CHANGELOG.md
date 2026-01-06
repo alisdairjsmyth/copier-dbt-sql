@@ -1,3 +1,9 @@
+## v0.3.6 (2026-01-06)
+
+### Fix
+
+- add commitizen configuration to template
+
 ## v0.3.5 (2026-01-06)
 
 ### Fix
