@@ -1,3 +1,9 @@
+## v0.3.5 (2026-01-06)
+
+### Fix
+
+- pin package dependencies to minor versions
+
 ## v0.3.4 (2026-01-05)
 
 ### Fix
