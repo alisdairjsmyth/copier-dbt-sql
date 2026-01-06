@@ -1,5 +1,5 @@
 # Copier configuration
-_subdirectory: template
+_subdirectory: template\[[ project_name_kecab_case ]]
 _envops:
   variable_start_string: "[["
   variable_end_string: "]]"
