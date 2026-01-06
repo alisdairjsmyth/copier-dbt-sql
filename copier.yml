@@ -87,35 +87,11 @@ dev_catalog:
   help: "Name of the development catalog - common"
   default: dev_dbt
 
-dev_sql_warehouse_name:
-  when: false
-  type: str
-  help: "Name of SQL warehouse for the development environment - common"
-  default: Serverless Starter Warehouse
-
-dev_workspace_host:
-  when: false
-  type: str
-  help: "Databricks workspace ID for the development environment - common"
-  default: https://dbc-97f40495-e782.cloud.databricks.com
-
 prd_catalog:
   when: false
   type: str
   help: "Name of the production catalog - common"
   default: prd_dbt
-
-prd_sql_warehouse_name:
-  when: false
-  type: str
-  help: "Name of SQL warehouse for the production environment - common"
-  default: Serverless Starter Warehouse
-
-prd_workspace_host:
-  when: false
-  type: str
-  help: "Databricks workspace ID for the production environment - common"
-  default: https://dbc-97f40495-e782.cloud.databricks.com
 
 project_name_kecab_case:
   when: false
