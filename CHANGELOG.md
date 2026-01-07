@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.5.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/0.4.0...v0.5.0) (2026-01-07)
+
+
+### Features
+
+* default require_explicit_package_overrides_for_builtin_materializations ([ffeff2c](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/ffeff2c47db4495f913f5e2b8241d7a7bb9f637d))
+
 ## 0.3.10 (2026-01-06)
 
 ### Fix
