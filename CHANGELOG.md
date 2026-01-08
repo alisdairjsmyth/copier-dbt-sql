@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.6.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.2...v0.6.3) (2026-01-08)
+
+
+### Bug Fixes
+
+* serverless environment version is string ([426a2bf](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/426a2bfe66177a4bf93399cff76b51760e44ac66))
+
 ## [0.6.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.1...v0.6.2) (2026-01-08)
 
 
