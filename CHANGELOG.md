@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.6.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.5.0...v0.6.0) (2026-01-08)
+
+
+### Features
+
+* add release-please workflow to template ([5076ea4](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/5076ea49ce6990b77002a60761c8610965af25f7))
+
 ## [0.5.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/0.4.0...v0.5.0) (2026-01-07)
 
 
