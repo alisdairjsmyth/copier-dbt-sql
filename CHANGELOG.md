@@ -9,6 +9,15 @@
 
 - include changelog in github release
 
+## [0.6.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.1...v0.6.2) (2026-01-08)
+
+
+### Bug Fixes
+
+* add databricks-connect dependency ([38fb45c](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/38fb45c502eb11bee4e57fef890d17e88f886ab6))
+* remove __builtins__.pyi from template ([50b06c6](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/50b06c68975f9ed51fbfed16e7206a5f33c303b3))
+* update dbt_databricks_dependency ([bfe5af8](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/bfe5af80b4af88c819d0bd91125042d3c0051d84))
+
 ## [0.6.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.0...v0.6.1) (2026-01-08)
 
 
