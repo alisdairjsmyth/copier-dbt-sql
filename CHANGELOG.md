@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.6.4](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.3...v0.6.4) (2026-01-09)
+
+
+### Bug Fixes
+
+* correct dev workspace definition ([a7c4761](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/a7c4761af704a93f4b6f7eb1924640bc8a50a25c))
+
 ## [0.6.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.2...v0.6.3) (2026-01-08)
 
 
