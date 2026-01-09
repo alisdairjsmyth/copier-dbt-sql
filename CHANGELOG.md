@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.6.7](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.6...v0.6.7) (2026-01-09)
+
+
+### Bug Fixes
+
+* include uv.lock in release ([866f7d3](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/866f7d39efea3b899cacc98d2bf76e0f8951b06c))
+
 ## [0.6.6](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.5...v0.6.6) (2026-01-09)
 
 
