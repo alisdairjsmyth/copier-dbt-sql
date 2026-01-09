@@ -41,5 +41,5 @@ jobs:
         if: ${{ steps.release.outputs.pr }}
         with:
           github_token: "${{ secrets.GITHUB_TOKEN }}"
-          commit_prefix: "chore"
+          commit_prefix: "chore: "
           commit_message: "update uv.lock"
