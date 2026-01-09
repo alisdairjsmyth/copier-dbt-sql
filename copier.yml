@@ -87,6 +87,12 @@ dev_catalog:
   help: "Name of the development catalog - common"
   default: dev_dbt
 
+dev_databricks_host:
+  when: false
+  type: str
+  help: Please provide the Databricks workspace host for development deployments.
+  default: https://dbc-97f40495-e782.cloud.databricks.com/
+
 prd_catalog:
   when: false
   type: str

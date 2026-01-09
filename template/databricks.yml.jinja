@@ -30,35 +30,27 @@ targets:
     mode: development
     default: true
     workspace:
-      host:
-        env: DATABRICKS_HOST
+      host: [[ dev_databricks_host ]]
     variables:
       catalog: [[ dev_catalog ]]
-      engineer_initials:
-        default: "xxx"
-        lookup:
-          env: ENGINEER_INITIALS
       # Each engineer has their own set of schema
-      schema: "${var.engineer_initials}"
+      data_product_schema: [[ data_product_schema ]]
+      schema: ${workspace.current_user.short_name}_${var.data_product_schema}
+      warehouse_name: "Serverless Starter Warehouse"
       warehouse_id:
         lookup:
-          warehouse:
-            env:
-              DATABRICKS_SQL_WAREHOUSE_NAME
+          warehouse: ${var.warehouse_name}
 
   prd:
     # Environment variables set in GitHub Actions
     mode: production
     workspace:
-      host:
-        env: DATABRICKS_HOST
       # We explicitly deploy to /Workspace/Users/[user_name] to make sure we only have a single copy.
       root_path: /Workspace/Users/alisdair_smyth@gmail.com/.bundle/[[ project_name ]]/prod # TODO
     variables:
       catalog: [[ prd_catalog ]]
       schema: [[ data_product_schema ]]
+      warehouse_name: "Serverless Starter Warehouse"
       warehouse_id:
         lookup:
-          warehouse:
-            env:
-              DATABRICKS_SQL_WAREHOUSE_NAME
+          warehouse: ${var.warehouse_name}
