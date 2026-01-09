@@ -15,6 +15,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: python
+
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.pr }}
+        with:
+          # We must check out the branch created by release-please
+          ref: ${{ fromJson(steps.release.outputs.pr).headBranchName }}
+          fetch-depth: 0
+
+      - name: Install uv
+        if: ${{ steps.release.outputs.pr }}
+        uses: astral-sh/setup-uv@v5
+
+      - name: Update uv.lock
+        if: ${{ steps.release.outputs.pr }}
+        run: |
+          uv lock
+
+      - name: Commit uv.lock
+        uses: devops-infra/action-commit-push@v1.0.3
+        if: ${{ steps.release.outputs.pr }}
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          commit_prefix: "chore"
+          commit_message: "update uv.lock"
