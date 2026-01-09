@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.6.5](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.4...v0.6.5) (2026-01-09)
+
+
+### Bug Fixes
+
+* correct variable list ([345cfd0](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/345cfd05685710e31d29118ac577fbe2506c03b5))
+
 ## [0.6.4](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.3...v0.6.4) (2026-01-09)
 
 
