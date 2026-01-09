@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.6.6](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.5...v0.6.6) (2026-01-09)
+
+
+### Bug Fixes
+
+* add warehouse_name variable ([8ce1aed](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/8ce1aed1513b080767c04c354167ed80af64a9d4))
+
 ## [0.6.5](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.4...v0.6.5) (2026-01-09)
 
 
