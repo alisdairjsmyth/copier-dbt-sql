@@ -54,21 +54,6 @@ _message_after_copy: |
   Refer to the README.md file for full "getting started" guide and production setup instructions.
 
 # Static and generated variables used in the template files.
-bundle_uuid:
-  when: false
-  type: str
-  help: "Unique identifier for this data product bundle"
-  default: >-
-    {% set r1 = "%04x" % (range(0, 65535) | random) -%}
-    {% set r2 = "%04x" % (range(0, 65535) | random) -%}
-    {% set r3 = "%04x" % (range(0, 65535) | random) -%}
-    {% set v4 = "%04x" % (range(16384, 20479) | random) -%}
-    {% set var = "%04x" % (range(32768, 49151) | random) -%}
-    {% set r4 = "%04x" % (range(0, 65535) | random) -%}
-    {% set r5 = "%04x" % (range(0, 65535) | random) -%}
-    {% set r6 = "%04x" % (range(0, 65535) | random) -%}
-    [[ r1 ]][[ r2 ]]-[[ r3 ]]-[[ v4 ]]-[[ var ]]-[[ r4 ]][[ r5 ]][[ r6 ]]
-
 databricks_serverless_environment_version:
   when: false
   type: str
