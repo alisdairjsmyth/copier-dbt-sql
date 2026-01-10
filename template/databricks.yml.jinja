@@ -47,8 +47,7 @@ targets:
     # Environment variables set in GitHub Actions
     mode: production
     workspace:
-      # We explicitly deploy to /Workspace/Users/[user_name] to make sure we only have a single copy.
-      root_path: /Workspace/Users/alisdair_smyth@gmail.com/.bundle/[[ project_name ]]/prod # TODO
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: [[ prd_catalog ]]
       schema: [[ data_product_schema ]]
