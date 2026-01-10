@@ -23,6 +23,7 @@
 - ruff
 - sqlfmt
 - SQLFluff
+- Just
 - GitHub Actions
 - Dependabot
 
@@ -36,17 +37,10 @@
 * [uv](https://docs.astral.sh/uv/) - `py -m pip install uv`
 * git
 * [Databricks CLI](https://github.com/databricks/cli)
+* Just - `uv tool install rust-just`
 
 ### After `copier copy`
 ```
 cd [[ project_name ]]
-git init
-uv venv
-.venv\Scripts\activate
-uv sync --group dev
-git add .
-pre-commit install
-pre-commit run --all-files
-git commit -m ""
-dbt init
+just init
 ```

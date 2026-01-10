@@ -32,6 +32,7 @@ The template includes [Visual Studio Code](https://code.visualstudio.com/) confi
 - [Conventional Commits](https://www.conventionalcommits.org/) to automate [Sematic Versioning](https://semver.org/) and [Keep A Changelog](https://keepachangelog.com/) with [Commitizen](https://github.com/commitizen-tools/commitizen)
 - CI/CD configuration using GitHub Actions
 - Dependabot configuration
+- [Just](https://just.systems/man/en/introduction.html) commands
 
 ## Using
 > [!TIP]
