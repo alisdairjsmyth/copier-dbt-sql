@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.8.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.7.2...v0.8.0) (2026-01-10)
+
+
+### Features
+
+* force new version ([3d7d396](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/3d7d39623917024dbfbd4552e301cf158b5dc9c8))
+
 ## [0.7.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.7.1...v0.7.2) (2026-01-10)
 
 
