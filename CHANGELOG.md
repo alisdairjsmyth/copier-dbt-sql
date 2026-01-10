@@ -9,6 +9,14 @@
 
 - include changelog in github release
 
+## [0.7.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.7.1...v0.7.2) (2026-01-10)
+
+
+### Bug Fixes
+
+* deploy based on release tag ([3e35b56](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/3e35b565b643644e336ecb44fd2cf138fca86831))
+* remove bundle uuid from template ([8561ab3](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/8561ab35c793ab357c00a1023947c5ad29c4b393))
+
 ## [0.7.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.7.0...v0.7.1) (2026-01-10)
 
 
