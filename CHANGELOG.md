@@ -9,6 +9,15 @@
 
 - include changelog in github release
 
+## [0.7.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.7.0...v0.7.1) (2026-01-10)
+
+
+### Bug Fixes
+
+* add deploy job to release-please workflow ([6d1b0f9](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/6d1b0f9f01e8db90c4de267b9390344c65b0ca1e))
+* add readme to template ([4811f2b](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/4811f2bb469efc85a082253fc46e655b0a7140a8))
+* use native substitutions in databricks.yml ([3b83b1b](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/3b83b1b63efa582dbcfb4c0c40a9b3286f1f4edb))
+
 ## [0.7.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.6.7...v0.7.0) (2026-01-09)
 
 
