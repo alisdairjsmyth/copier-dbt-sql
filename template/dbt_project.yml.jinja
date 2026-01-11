@@ -26,11 +26,11 @@ clean-targets: # directories to be removed by `dbt clean`
 models:
 {%- if with_dbt_artifacts %}
   dbt_artifacts:
-    +schema: dbt_artifacts
+    +schema: [[ dbt_artifacts_schema ]]
     sources:
-      +schema: dbt_artifacts_sources
+      +schema: [[ dbt_artifacts_schema ]]_sources
     staging:
-      +schema: dbt_artifacts_staging
+      +schema: [[ dbt_artifacts_schema ]]_staging
 
 {%- endif %}
   [[ project_name ]]:

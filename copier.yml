@@ -60,6 +60,12 @@ databricks_serverless_environment_version:
   help: "Databricks serverless environment version."
   default: "4"
 
+dbt_artifacts_schema:
+  when: false
+  type: str
+  help: "Schema name for dbt_artifacts."
+  default: "dbt_artifacts"
+
 dbt_databricks_dependency:
   when: false
   type: str
