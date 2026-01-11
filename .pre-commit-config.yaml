@@ -5,14 +5,14 @@ repos:
   - repo: local
     hooks:
       - id: commitizen
-        name: commitizen
+        name: "git · Validate commit message"
         entry: cz check
         args: [--commit-msg-file]
         require_serial: true
         language: system
         stages: [commit-msg]
       - id: uv-lock-check
-        name: uv lock check
+        name: "uv · Validate lock file"
         entry: uv lock
         args: ["--check"]
         require_serial: true
@@ -22,6 +22,10 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-yaml
+        name: "Checker · check-yaml"
       - id: check-toml
+        name: "Checker · check-toml"
       - id: end-of-file-fixer
+        name: "Fixer · end-of-file-fixer"
       - id: trailing-whitespace
+        name: "Fixer · trailing-whitespace"
