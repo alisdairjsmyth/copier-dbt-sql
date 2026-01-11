@@ -9,6 +9,14 @@
 
 - include changelog in github release
 
+## [0.11.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.10.0...v0.11.0) (2026-01-11)
+
+
+### Features
+
+* add generate_schema_name override ([c3361d9](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/c3361d9692603823fd6e69148fb619c143a3097c))
+* adjust generate_schema_name strategy ([a1582da](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/a1582da066ada6655e15e0117f2f3d063bc58e5d))
+
 ## [0.10.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.9.0...v0.10.0) (2026-01-11)
 
 
