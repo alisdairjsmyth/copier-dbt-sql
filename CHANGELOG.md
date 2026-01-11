@@ -9,6 +9,18 @@
 
 - include changelog in github release
 
+## [0.10.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.9.0...v0.10.0) (2026-01-11)
+
+
+### Features
+
+* add just recipes to template ([5f8c162](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/5f8c1622458c91d0f41ce6b9e5bebdaba36a3d37))
+
+
+### Bug Fixes
+
+* specify schema for dbt_artifacts ([c2c5f8f](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/c2c5f8fe07bf8359c4ed038561b1f72fdb7d70ff))
+
 ## [0.9.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.8.0...v0.9.0) (2026-01-10)
 
 
