@@ -9,6 +9,19 @@
 
 - include changelog in github release
 
+## [0.12.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.11.0...v0.12.0) (2026-01-11)
+
+
+### Features
+
+* add pull request template ([07139c3](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/07139c39211df5b07953aab0bbfd230bc26ebe94))
+* style pre-commit hook names ([eab051a](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/eab051aa289f8dc63afa392f47448c851f95a615))
+
+
+### Bug Fixes
+
+* add vs code file association for sql files ([f4efd80](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/f4efd808a752965a5c393d9da7b672f91073fe14))
+
 ## [0.11.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.10.0...v0.11.0) (2026-01-11)
 
 
