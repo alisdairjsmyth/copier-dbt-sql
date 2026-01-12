@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.12.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.1...v0.12.2) (2026-01-12)
+
+
+### Bug Fixes
+
+* resolve conflict between copier variable start string and bash notation used within template ([db1e2a5](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/db1e2a534a0abb9f20cd9c271b9794006cd541db))
+
 ## [0.12.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.0...v0.12.1) (2026-01-11)
 
 
