@@ -53,7 +53,7 @@ prune:
 
 # (git) Pull changes from the remote repository
 pull:
-  git pull
+  git pull --rebase
 
 # (git) Push changes to the remote repository
 push: pull
