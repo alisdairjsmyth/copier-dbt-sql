@@ -9,6 +9,15 @@
 
 - include changelog in github release
 
+## [0.12.4](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.3...v0.12.4) (2026-01-12)
+
+
+### Bug Fixes
+
+* bump python version ([d3353ba](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/d3353ba68e9607a02b53731abdc608eb933fe5b6))
+* update copier envops to use square brackets ([e99cc29](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/e99cc29f8e202150ab60ddb75e025ce4c5a9fb86))
+* use rebase ([e29994d](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/e29994de75ba5a340bd3ca481d7b21728ab526a9))
+
 ## [0.12.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.2...v0.12.3) (2026-01-12)
 
 
