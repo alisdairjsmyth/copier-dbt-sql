@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.12.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.2...v0.12.3) (2026-01-12)
+
+
+### Bug Fixes
+
+* change template dependencies to align with serverless definition ([bc06322](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/bc0632272a1e761e29c61d74026aab96f1b1e7fc))
+
 ## [0.12.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.1...v0.12.2) (2026-01-12)
 
 
