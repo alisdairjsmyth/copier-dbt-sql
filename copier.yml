@@ -19,18 +19,18 @@ project_name:
   help: Please provide a unique name for this project.
   default: dbt_project
   validator: >-
-    {% if not (project_name | regex_search('^[A-Za-z_][A-Za-z0-9-_]+$')) %}
+    [% if not (project_name | regex_search('^[A-Za-z_][A-Za-z0-9-_]+$')) %]
     Name must consist of letters, numbers, dashes, and underscores.
-    {% endif %}
+    [% endif %]
 
 data_product_schema:
   type: str
   help: Please provide the name of the schema for the data product.
   default: default
   validator: >-
-    {% if not (data_product_schema | regex_search('^\\w+$')) %}
+    [% if not (data_product_schema | regex_search('^\\w+$')) %]
     Invalid schema name.
-    {% endif %}
+    [% endif %]
 
 with_dbt_utils:
   type: bool
