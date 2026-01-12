@@ -33,11 +33,11 @@ jobs:
       - name: Check for changes
         id: git_check
         run: |
-          {%- raw %}
+          [%- raw %]
           if [[ -n $(git status --porcelain) ]]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
-          {%- endraw %}
+          [%- endraw %]
 
       - name: Check for merge conflicts
         if: steps.git_check.outputs.changed == 'true'

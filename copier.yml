@@ -1,8 +1,13 @@
 # Copier configuration
 _subdirectory: template
 _envops:
-  variable_start_string: "[["
+  block_end_string: "%]"
+  block_start_string: "[%"
+  comment_end_string: "#]"
+  comment_start_string: "[#"
+  keep_trailing_newline: true
   variable_end_string: "]]"
+  variable_start_string: "[["
 
 # Initial message displayed to user before copying files.
 _message_before_copy: |
