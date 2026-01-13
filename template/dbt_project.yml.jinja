@@ -45,6 +45,9 @@ models:
 
 [%- endif %]
   [[ project_name ]]:
+    +persist_docs:
+      relation: true
+      columns: true
 [%- if with_dbt_artifacts %]
 
 on-run-end:
