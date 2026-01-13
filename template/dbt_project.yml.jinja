@@ -45,6 +45,7 @@ models:
 
 [%- endif %]
   [[ project_name ]]:
+    # https://docs.getdbt.com/reference/resource-configs/persist_docs
     +persist_docs:
       relation: true
       columns: true
