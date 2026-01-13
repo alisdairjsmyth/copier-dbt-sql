@@ -45,6 +45,10 @@ models:
 
 [%- endif %]
   [[ project_name ]]:
+    # https://docs.getdbt.com/reference/resource-configs/group
+    +group: [[ project_name ]]
+    # https://docs.getdbt.com/reference/resource-configs/access
+    +access: public
     # https://docs.getdbt.com/reference/resource-configs/persist_docs
     +persist_docs:
       relation: true
