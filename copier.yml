@@ -32,6 +32,15 @@ data_product_schema:
     Invalid schema name.
     [% endif %]
 
+serverless_budget_policy_id:
+  type: str
+  help: Please provide the Databricks serverless budget policy ID to use.
+  default: ae19fb6f-e314-455e-aa05-051101bd1bd1
+  validator: >-
+    [% if not (serverless_budget_policy_id | regex_search('^[0-9a-fA-F-]{36}$')) %]
+    Invalid UUID format for budget policy ID.
+    [% endif %]
+
 with_dbt_utils:
   type: bool
   help: Include dbt-labs/dbt_utils package in the project?
