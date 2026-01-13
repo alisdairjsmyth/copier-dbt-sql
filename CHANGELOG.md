@@ -9,6 +9,22 @@
 
 - include changelog in github release
 
+## [0.13.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.5...v0.13.0) (2026-01-13)
+
+
+### Features
+
+* add support for serverless budget policies ([585dac3](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/585dac3e14387f47518bb11f1ecfb3d4615c7102)), closes [#25](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/25) [#25](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/25)
+* extend deployment to use environment variables for budget_policy_id ([7bc6613](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/7bc6613063bd48627440a247328e65297b89af28))
+
+
+### Bug Fixes
+
+* add group and access configuration to dbt project ([7864571](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/78645716d3ef2b92a5f5ff3b25b3619c8b95bf65))
+* exclude dbt_arifacts from build execution ([2384e98](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/2384e982110b216da12857abf7f1f153bb6bceee))
+* include automate dv hashing configuration ([55c7b17](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/55c7b1727a207b4f422116d1312e61a7f10164e4))
+* perist docs for relations and columns ([bda4944](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/bda4944dd9c4fd6140a13b169130f554e1ef5dd5))
+
 ## [0.12.5](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.4...v0.12.5) (2026-01-12)
 
 
