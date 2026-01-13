@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.13.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.13.0...v0.13.1) (2026-01-13)
+
+
+### Bug Fixes
+
+* resolve task key in line with databricks naming constraint ([b0cdb5c](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/b0cdb5c20354d3ffdfdbe1d114ce82a68df12d71))
+
 ## [0.13.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.12.5...v0.13.0) (2026-01-13)
 
 
