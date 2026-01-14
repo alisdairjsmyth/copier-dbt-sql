@@ -9,6 +9,13 @@
         { "type": "chore", "section": "⚙️ Maintenance", "hidden": false },
         { "type": "docs", "section": "📚 Documentation", "hidden": false },
         { "type": "perf", "section": "⚡ Performance", "hidden": false }
+      ],
+      "extra-files": [
+        {
+          "path": "dbt_project.yml",
+          "type": "yaml",
+          "jsonpath": "$.version"
+        }
       ]
     }
   }
