@@ -22,7 +22,7 @@ jobs:
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          config-type: release-please-config.json
+          config-file: release-please-config.json
 
   update-uv-lock:
     runs-on: ubuntu-latest
