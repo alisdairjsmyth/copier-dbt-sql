@@ -9,6 +9,20 @@
 
 - include changelog in github release
 
+## [0.14.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.13.1...v0.14.0) (2026-01-14)
+
+
+### 🚀 New Features
+
+* maintain semver within dbt_project.yml ([c2d13ef](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/c2d13efbca942453f2db10801c5d48313034bd71))
+
+
+### 🐛 Bug Fixes
+
+* add config-file to release-please action within template ([85c4abc](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/85c4abc059a8ed43dd6747527e6411dd65663aa3))
+* add conventional-commit badge to template ([a707d41](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/a707d41fb3e27c5898bead4e5f238b0fb6c53363))
+* lint dbt_project.yml within template ([8608b52](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/8608b5288125cddb5f7a8a6ffa835f1ef63264f2))
+
 ## [0.13.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.13.0...v0.13.1) (2026-01-13)
 
 
