@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.14.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.14.0...v0.14.1) (2026-01-14)
+
+
+### 🐛 Bug Fixes
+
+* change config-type to config-file ([89eb4a1](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/89eb4a1ccc52e9bbbcf480dc11ab434b7dd470f6))
+
 ## [0.14.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.13.1...v0.14.0) (2026-01-14)
 
 
