@@ -1,5 +1,5 @@
-name: '[[ project_name ]]'
-version: '0.0.0'
+name: [[ project_name ]]
+version: 0.0.0
 config-version: 2
 
 # A common profile is used for all data products
@@ -8,25 +8,31 @@ profile: vg_data_hub
 # These configurations specify where dbt should look for different types of files.
 # For Databricks asset bundles, we put everything in src, as you may have
 # non-dbt resources in your project.
-model-paths: ["src/models"]
-analysis-paths: ["src/analyses"]
-test-paths: ["src/tests"]
-seed-paths: ["src/seeds"]
-macro-paths: ["src/macros"]
-snapshot-paths: ["src/snapshots"]
+model-paths:
+  - src/models
+analysis-paths:
+  - src/analyses
+test-paths:
+  - src/tests
+seed-paths:
+  - src/seeds
+macro-paths:
+  - src/macros
+snapshot-paths:
+  - src/snapshots
 
 flags:
-  # https://docs.getdbt.com/reference/global-configs/behavior-changes#package-override-for-built-in-materialization
+  # ref: https://docs.getdbt.com/reference/global-configs/behavior-changes#package-override-for-built-in-materialization
   require_explicit_package_overrides_for_builtin_materializations: True
 
 clean-targets: # directories to be removed by `dbt clean`
-  - "target"
-  - "dbt_packages"
+  - target
+  - dbt_packages
 [%- if with_automate_dv %]
 
 vars:
   # Automate DV hashing configuration
-  # https://automate-dv.readthedocs.io/en/latest/macros/#hashing-configuration
+  # ref: https://automate-dv.readthedocs.io/en/latest/macros/#hashing-configuration
   hash: SHA
   concat_string: '||'
   null_placeholder_string: '^^'
@@ -45,16 +51,16 @@ models:
 
 [%- endif %]
   [[ project_name ]]:
-    # https://docs.getdbt.com/reference/resource-configs/group
+    # ref: https://docs.getdbt.com/reference/resource-configs/group
     +group: [[ project_name ]]
-    # https://docs.getdbt.com/reference/resource-configs/access
+    # ref: https://docs.getdbt.com/reference/resource-configs/access
     +access: public
-    # https://docs.getdbt.com/reference/resource-configs/persist_docs
+    # ref: https://docs.getdbt.com/reference/resource-configs/persist_docs
     +persist_docs:
       relation: true
       columns: true
 [%- if with_dbt_artifacts %]
 
 on-run-end:
-  - "{{ dbt_artifacts.upload_results(results) }}"
+  - '{{ dbt_artifacts.upload_results(results) }}'
 [%- endif %]
