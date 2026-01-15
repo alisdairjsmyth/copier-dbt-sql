@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.16.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.15.1...v0.16.0) (2026-01-15)
+
+
+### 🚀 New Features
+
+* introduce suppoort for local, dev and tst environments ([551a948](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/551a9480a1226d6198f77edfbeb61f9551ec40ba)), closes [#36](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/36)
+
 ## [0.15.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.15.0...v0.15.1) (2026-01-15)
 
 
