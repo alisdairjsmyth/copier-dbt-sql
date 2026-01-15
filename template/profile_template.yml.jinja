@@ -1,0 +1,13 @@
+fixed:
+  catalog: [[ dev_catalog ]]
+  host: [[ dev_databricks_host ]]
+  http_path: /sql/1.0/warehouses/7deeabbb5dd0f146
+  threads: 4
+  type: databricks
+prompts:
+  schema:
+    type: string
+    hint: <databricks_short_name>_[[ data_product_schema ]]
+  token:
+    type: string
+    hint: Databricks PAT
