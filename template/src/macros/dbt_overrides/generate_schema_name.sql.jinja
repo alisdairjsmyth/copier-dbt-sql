@@ -1,13 +1,17 @@
 {% macro generate_schema_name(custom_schema_name, node) -%}
-    {%- set default_schema = target.schema -%}
 
-    {%- if "[[ dbt_artifacts_schema ]]" in custom_schema_name %}}
+    {%- set default_schema = target.schema -%}
+    {%- if custom_schema_name is none -%}
+
+        {{ default_schema }}
+
+    {%- elif "[[ dbt_artifacts_schema ]]" in custom_schema_name %}}
         {{ custom_schema_name | trim }}
 
-    {%- elif custom_schema_name is not null -%}
+    {%- else -%}
+
         {{ default_schema }}_{{ custom_schema_name | trim }}
 
-    {%- else -%}
-        {{ default_schema }}
     {%- endif -%}
+
 {%- endmacro %}
