@@ -30,12 +30,14 @@ commit:
 
 # (git) Create a feature branch with prefix (usage: just feat my-feature)
 feat name:
-  @git checkout master && git pull origin master
+  @git checkout master
+  @git pull origin master
   git checkout -b feature/{{name}}
 
 # (git) Create a fix branch with prefix (usage: just fix bug-123)
 fix name:
-  @git checkout master && git pull origin master
+  @git checkout master
+  @git pull origin master
   git checkout -b fix/{{name}}
 
 # Lock project dependencies
