@@ -84,7 +84,7 @@ dbt_databricks_dependency:
   when: false
   type: str
   help: "dbt-databricks dependency definition."
-  default: "dbt-databricks>=1.10.0,<1.11.0"
+  default: "dbt-databricks>=1.11.0,<1.12.0"
 
 dev_catalog:
   when: false
