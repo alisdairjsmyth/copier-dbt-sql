@@ -9,6 +9,20 @@
 
 - include changelog in github release
 
+## [0.15.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.14.1...v0.15.0) (2026-01-15)
+
+
+### 🚀 New Features
+
+* use dbt-databricks 1.11 ([11c021c](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/11c021cbabf726b23c5524f7003237c22275437b)), closes [#38](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/38)
+
+
+### 🐛 Bug Fixes
+
+* introduce profile_template.yml for dbt init ([19cbbe6](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/19cbbe66738fe72116c15061c6354e0327851d49)), closes [#35](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/35)
+* modify release-please release type to maintain dbt_project.yml formatting ([e8fb197](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/e8fb1971ce3fe394710869bbf001da8a16154c45)), closes [#29](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/29)
+* use data product specific profile ([d59dc08](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/d59dc08448d46749cb8e4d3a10cefe635769270f))
+
 ## [0.14.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.14.0...v0.14.1) (2026-01-14)
 
 
