@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.15.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.15.0...v0.15.1) (2026-01-15)
+
+
+### 🐛 Bug Fixes
+
+* avoid testing for dbt_artifacts if custom_schema_name is none ([b1e18df](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/b1e18dfbc0dad9e73fc61fa20869efdf33eb3217))
+
 ## [0.15.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.14.1...v0.15.0) (2026-01-15)
 
 
