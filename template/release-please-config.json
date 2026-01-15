@@ -1,7 +1,7 @@
 {
   "packages": {
     ".": {
-      "release-type": "python",
+      "release-type": "simple",
       "changelog-path": "CHANGELOG.md",
       "changelog-sections": [
         { "type": "feat", "section": "🚀 New Features", "hidden": false },
@@ -12,9 +12,12 @@
       ],
       "extra-files": [
         {
+          "path": "pyproject.toml",
+          "type": "generic"
+        },
+        {
           "path": "dbt_project.yml",
-          "type": "yaml",
-          "jsonpath": "$.version"
+          "type": "generic"
         }
       ]
     }
