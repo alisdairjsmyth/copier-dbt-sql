@@ -3,9 +3,10 @@ name: PR
 on:
   pull_request:
     types: [edited, opened, reopened, synchronize]
+    branches: [master]
 
 jobs:
-  title:
+  check-title:
     runs-on: ubuntu-latest
 
     name: Check PR title
@@ -17,3 +18,25 @@ jobs:
       - name: Check PR title
         run: |
           uvx --from=commitizen cz check --message "${{ github.event.pull_request.title }}"
+
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      BUNDLE_VAR_budget_policy_id: ${{ vars.BUNDLE_VAR_BUDGET_POLICY_ID }}
+      BUNDLE_VAR_warehouse_name: ${{ vars.BUNDLE_VAR_WAREHOUSE_NAME }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name}}
+
+      - uses: databricks/setup-cli@main
+
+      - name: Validate Bundle
+        run: databricks bundle validate --target dev
+
+      - name: Deploy Bundle to Development
+        run: databricks bundle deploy --target dev

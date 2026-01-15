@@ -23,7 +23,7 @@ variables:
     description: The serverless budget policy to use
 
 targets:
-  dev:
+  local:
     # The default target uses 'mode: development' to create a development copy.
     # - Deployed resources get prefixed with '[dev my_user_name]'
     # - Any job schedules and triggers are paused by default.
@@ -45,6 +45,36 @@ targets:
       budget_policy_id: "[[ serverless_budget_policy_id ]]"
 
   prd:
+    # Environment variables set in GitHub Actions
+    mode: production
+    workspace:
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: [[ prd_catalog ]]
+      data_product_schema: [[ data_product_schema ]]
+      schema: [[ data_product_schema ]]
+      warehouse_name: "Serverless Starter Warehouse"
+      warehouse_id:
+        lookup:
+          warehouse: ${var.warehouse_name}
+      budget_policy_id: "[[ serverless_budget_policy_id ]]"
+
+  dev:
+    # Environment variables set in GitHub Actions
+    mode: production
+    workspace:
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: [[ prd_catalog ]]
+      data_product_schema: [[ data_product_schema ]]
+      schema: [[ data_product_schema ]]
+      warehouse_name: "Serverless Starter Warehouse"
+      warehouse_id:
+        lookup:
+          warehouse: ${var.warehouse_name}
+      budget_policy_id: "[[ serverless_budget_policy_id ]]"
+
+  tst:
     # Environment variables set in GitHub Actions
     mode: production
     workspace:

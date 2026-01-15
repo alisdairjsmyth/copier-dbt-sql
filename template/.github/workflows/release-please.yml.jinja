@@ -49,12 +49,12 @@ jobs:
           commit_prefix: "chore: "
           commit_message: "update uv.lock"
 
-  deploy:
+  deploy-to-tst:
     runs-on: ubuntu-latest
     # This job only runs if the release-please job actually created a release
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
-    environment: Prd
+    environment: tst
     env:
       DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
@@ -68,5 +68,5 @@ jobs:
 
       - uses: databricks/setup-cli@main
 
-      - name: Deploy Bundle to Prod
-        run: databricks bundle deploy --target prd
+      - name: Deploy Bundle to Test
+        run: databricks bundle deploy --target tst
