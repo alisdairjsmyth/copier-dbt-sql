@@ -68,6 +68,12 @@ _message_after_copy: |
   Refer to the README.md file for full "getting started" guide and production setup instructions.
 
 # Static and generated variables used in the template files.
+databricks_cli_dependency:
+  when: false
+  type: str
+  help: "databricks cli dependency definition."
+  default: "0.283.0"
+
 databricks_serverless_environment_version:
   when: false
   type: str

@@ -64,3 +64,7 @@ push: pull
 # Sync project dependencies to the virtual environment
 sync:
   uv sync --group dev
+
+# Update databricks CLI to the latest version (usage: just update-databricks-cli 0.282.0)
+update-databricks-cli version:
+  winget upgrade Databricks.DatabricksCLI --version {{version}}
