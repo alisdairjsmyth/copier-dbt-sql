@@ -9,6 +9,19 @@
 
 - include changelog in github release
 
+## [0.17.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.16.0...v0.17.0) (2026-01-16)
+
+
+### 🚀 New Features
+
+* add power user for dbt extension to template ([77db83e](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/77db83e6f9cfeae34701f54376845622a1eb1892)), closes [#44](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/44)
+* enforce databricks cli version requirement ([f18403c](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/f18403c66519238b3d9a306ccfa060091480759b))
+
+
+### 🐛 Bug Fixes
+
+* split commands in fix and feat recipes ([8bf76e7](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/8bf76e7a418a19cb5a2e2a17928b4ba2e5427aec))
+
 ## [0.16.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.15.1...v0.16.0) (2026-01-15)
 
 
