@@ -9,6 +9,15 @@
 
 - include changelog in github release
 
+## [0.17.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.17.0...v0.17.1) (2026-01-20)
+
+
+### 🐛 Bug Fixes
+
+* add ignore-paths ([d8b1884](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/d8b1884c274f591489b21ba029853c2f4ebbce19)), closes [#47](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/47)
+* fix generate_schema_name ([9ca0158](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/9ca01580e6649ed8647a485254adb90cce9d2c1a))
+* replace profile_dir with project_dir config ([0001198](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/0001198f3ad751ab7b2895a3a24bca684cf79cf3)), closes [#48](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/48)
+
 ## [0.17.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.16.0...v0.17.0) (2026-01-16)
 
 
