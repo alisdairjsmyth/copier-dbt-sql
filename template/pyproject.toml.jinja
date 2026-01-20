@@ -43,6 +43,15 @@ exclude_rules = [
     "layout.select_targets",
     "layout.spacing"
 ]
+ignore_paths = [
+  ".databricks/",
+  ".github/",
+  ".venv/",
+  "dbt_packages/",
+  "logs/",
+  "resources/",
+  "target/"
+]
 
 [tool.sqlfluff.templater.dbt]
 project_dir = "."
