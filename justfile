@@ -28,6 +28,11 @@ clone:
 commit:
   cz commit
 
+# (git) Delete local (merged) branch (usage: just delete-branch feature/my-feature)
+delete-branch name:
+  just prune
+  git branch -d {{name}}
+
 # (git) Create a feature branch with prefix (usage: just feat my-feature)
 feat name:
   @just master
@@ -37,6 +42,10 @@ feat name:
 fix name:
   @just master
   git checkout -b fix/{{name}}
+
+# (git) List local branches
+list-branches:
+  git branch -l
 
 # Lock project dependencies
 lock:

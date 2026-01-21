@@ -41,6 +41,11 @@ commit:
 debug:
   dbt debug
 
+# (git) Delete local (merged) branch (usage: just delete-branch feature/my-feature)
+delete-branch name:
+  just prune
+  git branch -d {{name}}
+
 # (databricks) Deploy the Databricks Asset Bundle
 deploy: validate
   databricks bundle deploy
@@ -74,6 +79,10 @@ init:
 # Lint the dbt project
 lint:
   pre-commit run
+
+# (git) List local branches
+list-branches:
+  git branch -l
 
 # Lock project dependencies
 lock:
