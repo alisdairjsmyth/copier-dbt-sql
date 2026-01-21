@@ -30,19 +30,22 @@ commit:
 
 # (git) Create a feature branch with prefix (usage: just feat my-feature)
 feat name:
-  @git checkout master
-  @git pull origin master
+  @just master
   git checkout -b feature/{{name}}
 
 # (git) Create a fix branch with prefix (usage: just fix bug-123)
 fix name:
-  @git checkout master
-  @git pull origin master
+  @just master
   git checkout -b fix/{{name}}
 
 # Lock project dependencies
 lock:
   uv lock
+
+# (git) Switch to master branch and pull latest changes
+master:
+  git checkout master
+  just pull
 
 # (git) Run pre-commit hooks on all files
 pre-commit:
@@ -55,11 +58,11 @@ prune:
 
 # (git) Pull changes from the remote repository
 pull:
-  git pull --rebase
+  git pull --rebase origin master
 
 # (git) Push changes to the remote repository
 push: pull
-  git push
+  git push origin HEAD
 
 # Sync project dependencies to the virtual environment
 sync:
