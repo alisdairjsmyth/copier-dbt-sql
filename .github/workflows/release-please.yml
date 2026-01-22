@@ -81,9 +81,8 @@ jobs:
           labels: "autorelease: published"
 
       - name: Remove label from PR
-        uses: actions-ecosystem/action-add-labels@v1
+        uses: actions-ecosystem/action-remove-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}
           labels: "autorelease: tagged"
-
