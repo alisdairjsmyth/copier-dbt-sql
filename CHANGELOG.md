@@ -9,6 +9,18 @@
 
 - include changelog in github release
 
+## [0.20.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.19.0...v0.20.0) (2026-01-22)
+
+
+### 🚀 New Features
+
+* add support for autorelease published label to template ([651e4b7](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/651e4b7552993d09b362542ce72a081d83e9f580)), closes [#60](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/60)
+
+
+### 🐛 Bug Fixes
+
+* update generate_schema_name to align with sqlfmt formatting ([f10885f](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/f10885f68ac73eaad139314c321c1e0ba08e5fbe)), closes [#51](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/51)
+
 ## 0.19.0 (2026-01-22)
 
 **Full Changelog**: https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.18.9...v0.19.0
