@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.18.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.18.2...v0.18.3) (2026-01-22)
+
+
+### 🐛 Bug Fixes
+
+* force bump of template version ([003ce51](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/003ce51675f05847bdc0cf5b206692a6563d244c))
+
 ## [0.18.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.18.1...v0.18.2) (2026-01-22)
 
 
