@@ -9,6 +9,19 @@
 
 - include changelog in github release
 
+## [0.18.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.17.1...v0.18.0) (2026-01-22)
+
+
+### 🚀 New Features
+
+* add just recipes for git branch operations ([#57](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/57)) ([f6d1386](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/f6d13867c902209d89797ef54d54ce3f9c5a8865)), closes [#55](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/55)
+* add support for autorelease published label ([#61](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/61)) ([fda4edd](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/fda4eddd88ddbe1641d8d4c27308dc90ae6027e6))
+
+
+### 🐛 Bug Fixes
+
+* update git recipes in template ([#53](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/53)) ([fe69402](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/fe694023819b78e1d6a6d732d19666f4e1715b79)), closes [#52](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/52)
+
 ## [0.17.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.17.0...v0.17.1) (2026-01-20)
 
 
