@@ -9,6 +9,10 @@
 
 - include changelog in github release
 
+## 0.19.0 (2026-01-22)
+
+**Full Changelog**: https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.18.9...v0.19.0
+
 ## [0.18.9](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.18.8...v0.18.9) (2026-01-22)
 
 
