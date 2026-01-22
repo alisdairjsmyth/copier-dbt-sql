@@ -4,13 +4,13 @@ resources:
       name: [[ project_name ]]_job
 
       tasks:
-        - task_key: dbt_build
+        - task_key: [[ project_name ]]_dbt_build
           environment_key: default
           dbt_task:
             project_directory: ../
             commands:
               - 'dbt deps'
-              - 'dbt build[% if with_dbt_artifacts %] --exclude dbt_artifacts[% endif %]'
+              - 'dbt build --select [[ project_name]]'
             catalog: ${var.catalog}
             schema: ${var.schema}
             warehouse_id: ${var.warehouse_id}
