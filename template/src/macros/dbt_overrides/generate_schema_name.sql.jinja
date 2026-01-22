@@ -5,12 +5,10 @@
 
         {{ default_schema }}
 
-    {%- elif "[[ dbt_artifacts_schema ]]" in custom_schema_name %}
+        {%- elif "dbt_artifacts" in custom_schema_name %}
         {{ custom_schema_name | trim }}
 
-    {%- else -%}
-
-        {{ default_schema }}_{{ custom_schema_name | trim }}
+    {%- else -%} {{ default_schema }}_{{ custom_schema_name | trim }}
 
     {%- endif -%}
 
