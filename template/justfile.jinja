@@ -23,7 +23,7 @@ auth:
 
 # (dbt) Build the dbt project
 build:
-  dbt build[% if with_dbt_artifacts %] --exclude dbt_artifacts[% endif %]
+  dbt build --select [[ project_name]]
 
 # (git) Initialize environment after clone
 clone:
@@ -112,7 +112,7 @@ push: pull
 
 # (dbt) Run the dbt project
 run:
-  dbt run[% if with_dbt_artifacts %] --exclude dbt_artifacts[% endif %]
+  dbt run --select [[ project_name]]
 
 # Sync project dependencies to the virtual environment
 sync:
