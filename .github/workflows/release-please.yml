@@ -74,7 +74,6 @@ jobs:
             core.setOutput('numbers', JSON.stringify(numbers));
 
       - name: Add label to PR
-        if: ${{ fromJSON(steps.prs-for-commit.outputs.numbers) && fromJSON(steps.prs-for-commit.outputs.numbers).length > 0 }}
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -82,9 +81,9 @@ jobs:
           labels: "autorelease: published"
 
       - name: Remove label from PR
-        if: ${{ fromJSON(steps.prs-for-commit.outputs.numbers) && fromJSON(steps.prs-for-commit.outputs.numbers).length > 0 }}
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}
           labels: "autorelease: tagged"
+
