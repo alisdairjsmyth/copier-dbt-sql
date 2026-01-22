@@ -72,3 +72,20 @@ jobs:
 
       - name: Deploy Bundle to Test
         run: databricks bundle deploy --target tst
+
+  update-pr-label:
+    runs-on: ubuntu-latest
+    # This job only runs if the release-please job actually created a release
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+    steps:
+      - name: remove label
+        uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: "autorelease: tagged"
+      - name: add labels
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: "autorelease: published"
