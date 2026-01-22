@@ -78,7 +78,7 @@ jobs:
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.prs-for-commit.outputs.numbers }}
+          number: ${{ steps.prs-for-commit.outputs.numbers[0] }}
           labels: "autorelease: published"
 
       - name: Remove label from PR
@@ -86,6 +86,7 @@ jobs:
         uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.prs-for-commit.outputs.numbers }}
+          number: ${{ steps.prs-for-commit.outputs.numbers[0] }}
           labels: "autorelease: tagged"
+
 
