@@ -2,7 +2,6 @@
   "packages": {
     ".": {
       "release-type": "python",
-      "changelog-type": "github",
       "changelog-path": "CHANGELOG.md",
       "changelog-sections": [
         { "type": "feat", "section": "🚀 New Features", "hidden": false },
