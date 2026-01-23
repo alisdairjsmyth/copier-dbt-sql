@@ -32,7 +32,7 @@ dev = [
 # Per dbtonic linting rules - https://docs.getdbt.com/docs/cloud/dbt-cloud-ide/lint-format#configure-dbtonic-linting-rules
 # Updates for sqlfmt compatibility - https://sqlfmt.com/docs/integrations/sqlfluff
 [tool.sqlfluff.core]
-templater = "dbt"
+templater = "jinja"
 dialect = "databricks"
 max_line_length = 88
 # Included to be compatible with sqlfmt
@@ -50,11 +50,24 @@ ignore_paths = [
   "dbt_packages/",
   "logs/",
   "resources/",
+  "macros/"
   "target/"
 ]
 
 [tool.sqlfluff.templater.dbt]
 project_dir = "."
+dbt_skip_compilation_error = false
+
+[tool.sqlfluff.templater.jinja]
+apply_dbt_builtins = true
+
+[tool.sqlfluff.templater.jinja.macros]
+# Macros provided as builtins for dbt projects
+dbt_ref = "{% macro ref(model_ref) %}{{model_ref}}{% endmacro %}"
+dbt_source = "{% macro source(source_name, table) %}{{source_name}}_{{table}}{% endmacro %}"
+dbt_config = "{% macro config() %}{% for k in kwargs %}{% endfor %}{% endmacro %}"
+dbt_var = "{% macro var(variable, default='') %}item{% endmacro %}"
+dbt_is_incremental = "{% macro is_incremental() %}True{% endmacro %}"
 
 [tool.sqlfluff.rules.capitalisation.keywords]
 capitalisation_policy = "lower"
