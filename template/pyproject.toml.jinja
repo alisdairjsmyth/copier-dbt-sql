@@ -69,6 +69,18 @@ dbt_config = "{% macro config() %}{% for k in kwargs %}{% endfor %}{% endmacro %
 dbt_var = "{% macro var(variable, default='') %}item{% endmacro %}"
 dbt_is_incremental = "{% macro is_incremental() %}True{% endmacro %}"
 
+# Aliasing bundle (AL) configuration
+[tool.sqlfluff.rules.aliasing.expression]
+allow_scalar = false
+
+[tool.sqlfluff.rules.aliasing.length]
+min_alias_length = 4
+
+# Ambiguous bundle (AM) configuration
+[tool.sqlfluff.rules.ambiguous.column_references]
+group_by_and_order_by_style = "implicit"
+
+# Capitalisation bundle (CP) configuration
 [tool.sqlfluff.rules.capitalisation.keywords]
 capitalisation_policy = "lower"
 
@@ -81,21 +93,15 @@ capitalisation_policy = "lower"
 [tool.sqlfluff.rules.capitalisation.literals]
 capitalisation_policy = "lower"
 
-[tool.sqlfluff.rules.ambiguous.column_references]
-group_by_and_order_by_style = "implicit"
-
-[tool.sqlfluff.rules.aliasing.length]
-min_alias_length = 4
-
-[tool.sqlfluff.rules.aliasing.expression]
-allow_scalar = false
+[tool.sqlfluff.rules.capitalisation.types]
+capitalisation_policy = "lower"
 
 [tool.sqlfluff.rules.convention.not_equal]
 # Require != over <> for not equal
 preferred_not_equal_style = "c_style"
 
 [tool.sqlfluff.rules.convention.select_trailing_comma]
-select_clause_trailing_comma = "require"
+select_clause_trailing_comma = "forbid"
 
 # Included to be compatible with sqlfmt
 [tool.sqlfluff.rules.convention.terminator]
