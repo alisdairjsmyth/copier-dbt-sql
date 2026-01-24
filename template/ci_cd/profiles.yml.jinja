@@ -1,7 +1,7 @@
 dbt_project:
   outputs:
     databricks_env:
-      catalog: [[ prd_catalog ]]
+      catalog: [[ dev_catalog ]]
       host: "{{ env_var('DATABRICKS_HOST') }}"
       http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
       schema: [[ data_product_schema ]]
