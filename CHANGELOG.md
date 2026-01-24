@@ -9,6 +9,14 @@
 
 - include changelog in github release
 
+## [0.21.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.2...v0.21.3) (2026-01-24)
+
+
+### 🐛 Bug Fixes
+
+* add .jinja extension for templating ([e1301bd](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/e1301bd01a1db075594794b3166a7ee71f2f906a))
+* missing comma in ignore paths ([ceddc47](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/ceddc4712311cc53ef31056ae52669830aa8531b))
+
 ## [0.21.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.1...v0.21.2) (2026-01-24)
 
 
