@@ -136,7 +136,7 @@ jobs:
           source .venv/bin/activate
           # Read multiline output and pass to sqlfluff via xargs
           echo "${{ steps.get_files_to_lint.outputs.lintees }}" \
-            {% raw %}| grep -v '^[[:space:]]*$' \{% endraw %}
+            [% raw %]| grep -v '^[[:space:]]*$' \[% endraw %]
             | xargs -r sqlfluff lint \
               --templater dbt \
               --format github-annotation \
