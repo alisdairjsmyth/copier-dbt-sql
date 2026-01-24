@@ -9,6 +9,19 @@
 
 - include changelog in github release
 
+## [0.21.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.20.1...v0.21.0) (2026-01-24)
+
+
+### 🚀 New Features
+
+* add sqlfluff lint and annotation to pr workflow ([#83](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/83)) ([8f1ddae](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/8f1ddaec10b65ff3c4ed2d3e0936c10acb553b6c))
+
+
+### 🐛 Bug Fixes
+
+* add sha as an output of release-please job ([aa5cdc7](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/aa5cdc723077f03a0aa4c92a4f8541ff72d1d964))
+* sqlfluff linting of dbt project ([#82](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/82)) ([24e168f](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/24e168f4dc3e8a4ea56fb0dd63f944a4e0ed65c7))
+
 ## [0.20.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.20.0...v0.20.1) (2026-01-22)
 
 
