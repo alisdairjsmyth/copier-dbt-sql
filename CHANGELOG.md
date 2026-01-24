@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.21.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.1...v0.21.2) (2026-01-24)
+
+
+### 🐛 Bug Fixes
+
+* escape jinja clashes in template ([6d3cc82](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/6d3cc82b8fb254ea092d5f03b9a6513d156ddd93))
+
 ## [0.21.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.0...v0.21.1) (2026-01-24)
 
 
