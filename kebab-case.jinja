@@ -1,0 +1,7 @@
+[% macro to_kebab_case(value) -%]
+  [%- set ns = namespace(s = value | lower | replace('_', '-')) -%]
+  [%- for _ in range(6) -%]
+    [%- set ns.s = ns.s | replace('--', '-') -%]
+  [%- endfor -%]
+  [[- ns.s.strip('-') -]]
+[%- endmacro %]

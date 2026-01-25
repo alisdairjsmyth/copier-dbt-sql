@@ -36,6 +36,7 @@ def _load_pyproject(path: Path) -> dict:
         ("project", "project"),
         ("Already-Kebab", "already-kebab"),
         ("Mixed__Case", "mixed-case"),
+        ("A__b___C____d_____E", "a-b-c-d-e"),
     ],
 )
 def test_kebab_name_in_generated_toml(copie, human_name: str, expected_kebab: str):
