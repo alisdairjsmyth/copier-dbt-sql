@@ -156,13 +156,13 @@ gha__peter_evans__create_pull_request:
   when: false
   type: str
   help: "Version of peter-evans/create-pull-request action to use in GitHub Actions workflows."
-  default: "peter-evans/create-pull-request@v6"
+  default: "peter-evans/create-pull-request@v8"
 
 gha__yuzutech__annotations_action:
   when: false
   type: str
   help: "Version of yuzutech/annotations-action to use in GitHub Actions workflows."
-  default: "yuzutech/annotations-action@v0.3.0"
+  default: "yuzutech/annotations-action@v0.5.0"
 
 prd_catalog:
   when: false
