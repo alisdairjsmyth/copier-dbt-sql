@@ -53,6 +53,7 @@ jobs:
         with:
           report-path: './reports/pytest-ctrf.json'
           pull-request-report: true
+          github-report: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: always()
