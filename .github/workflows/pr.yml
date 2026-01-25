@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,4 +46,13 @@ jobs:
         run: |
           # Generate a JUnit report for debugging (optional)
           mkdir -p reports
-          uv run pytest -q --maxfail=1 --disable-warnings --junitxml=reports/junit.xml
+          uv run pytest -v --ctrf ./reports/pytest-ctrf.json
+
+      - name: Publish Test Reports
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: './reports/pytest-ctrf.json'
+          pull-request-report: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: always()

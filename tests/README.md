@@ -4,9 +4,10 @@ This folder contains a **typed, fixture‑driven test harness** for validating a
 ## File layout
 ```
 tests/
-├─ conftest.py            # helpers, types, fixtures, centralised expectations
-├─ test_template.py       # single parametrized test using the helpers
-└─ README.md              # (this file)
+├─ conftest.py                 # helpers, types, fixtures, centralised expectations
+├─ test_kebab_project_name.py  # parametrized test of kebab project name
+├─ test_template.py            # single parametrized test using the helpers
+└─ README.md                   # (this file)
 ```
 
 ## Running tests

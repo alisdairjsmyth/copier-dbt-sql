@@ -63,7 +63,7 @@ with_automate_dv:
 
 # Message displayed to user after copying files.
 _message_after_copy: |
-  Your new project has been created in the '[[ project_name_kecab_case ]]' directory!
+  Your new project has been created in the '[[ project_name_kebab_case ]]' directory!
 
   Refer to the README.md file for full "getting started" guide and production setup instructions.
 
@@ -110,9 +110,9 @@ prd_catalog:
   help: "Name of the production catalog - common"
   default: prd_dbt
 
-project_name_kecab_case:
+project_name_kebab_case:
   when: false
   type: str
   help: "Project name in kebab-case."
   default: >-
-    [[ project_name | replace('_', '-') | lower ]]
+    [% from 'kebab-case.jinja' import to_kebab_case %][[ to_kebab_case(project_name) ]]
