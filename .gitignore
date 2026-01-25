@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+*.egg-info/
+*.py[cdo]
+.venv/
+dist/
+
+# Ruff
+.ruff_cache/

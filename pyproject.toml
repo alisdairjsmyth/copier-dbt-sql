@@ -14,7 +14,11 @@ dependencies = [
 [dependency-groups]  # https://docs.astral.sh/uv/concepts/projects/dependencies/#development-dependencies
 dev = [
   "commitizen>=4.3.0,<5.0.0",
+  "copier>=9.11.3",
   "pre-commit>=4.5.0, <5.0.0",
+  "pytest>=9.0.2",
+  "pytest-copie>=0.3.1",
+  "ruff>=0.14.0,<1.0.0",
 ]
 
 # --- Commitizen Configuration ---
@@ -23,4 +27,15 @@ version_provider = "uv"
 tag_format = "${version}"
 version_files = [
   "pyproject.toml:version",
+]
+
+# --- Pytest Configuration ---
+[tool.pytest] # https://docs.pytest.org/en/stable/reference/reference.html#configuration-options
+minversion = "9.0"
+testpaths = [
+  "tests",
+]
+filterwarnings = [
+  # Ignore Copier's "dirty template" warning during tests
+  "ignore::copier.errors.DirtyLocalWarning",
 ]
