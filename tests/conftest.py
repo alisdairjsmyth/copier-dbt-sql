@@ -6,6 +6,26 @@ import yaml
 from pathlib import Path
 
 
+# --- Single source of truth for package identifiers ---
+PKGS = {
+    "ARTIFACTS": "brooklyn-data/dbt_artifacts",
+    "AUTOMATE_DV": "Datavault-UK/automate_dv",
+    "UTILS": "dbt-labs/dbt_utils",
+    "EXPECTATIONS": "metaplane/dbt_expectations",
+}
+
+# Version ranges centralised and keyed by PKGS keys (not raw strings)
+PKG_VERSIONS = {
+    "ARTIFACTS": (">=2.10.0", "<2.11.0"),
+    "AUTOMATE_DV": (">=0.11.4", "<0.12.0"),
+    "UTILS": (">=1.3.3", "<1.4.0"),
+    "EXPECTATIONS": (">=0.10.10", "<0.11.0"),
+}
+
+# If the rendered packages.yml has a specific order, capture it once here
+PKG_ORDER = ["ARTIFACTS", "AUTOMATE_DV", "UTILS", "EXPECTATIONS"]
+
+
 # ---------------- small utilities ----------------
 
 
@@ -16,34 +36,32 @@ def _load_yaml(path: Path) -> dict:
 
 
 def _expected_packages(
-    *,
-    with_utils: bool,
-    with_artifacts: bool,
-    with_expectations: bool,
-    with_automate_dv: bool,
+    *, with_utils, with_artifacts, with_expectations, with_automate_dv
 ):
-    pkgs = []
+    """Return expected 'packages' list or None, with a stable order."""
+    include_keys = []
     if with_artifacts:
-        pkgs.append(
-            {
-                "package": "brooklyn-data/dbt_artifacts",
-                "version": [">=2.10.0", "<2.11.0"],
-            }
-        )
+        include_keys.append("ARTIFACTS")
     if with_automate_dv:
-        pkgs.append(
-            {"package": "Datavault-UK/automate_dv", "version": [">=0.11.4", "<0.12.0"]}
-        )
+        include_keys.append("AUTOMATE_DV")
     if with_utils:
-        pkgs.append({"package": "dbt-labs/dbt_utils", "version": [">=1.3.3", "<1.4.0"]})
+        include_keys.append("UTILS")
     if with_expectations:
-        pkgs.append(
-            {
-                "package": "metaplane/dbt_expectations",
-                "version": [">=0.10.10", "<0.11.0"],
-            }
-        )
-    return pkgs or None
+        include_keys.append("EXPECTATIONS")
+
+    # Sanity guard: ensure we have versions for everything we’re including
+    missing = [k for k in include_keys if k not in PKG_VERSIONS]
+    assert not missing, f"Missing PKG_VERSIONS entries for: {missing}"
+
+    packages = [
+        {
+            "package": PKGS[key],
+            "version": list(PKG_VERSIONS[key]),
+        }
+        for key in PKG_ORDER
+        if key in include_keys
+    ]
+    return packages or None
 
 
 def _expected_vars(with_automate_dv: bool):
