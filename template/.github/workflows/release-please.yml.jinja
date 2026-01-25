@@ -19,7 +19,7 @@ jobs:
       tag_name: ${{ steps.release.outputs.tag_name }}
       sha: ${{ steps.release.outputs.sha }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: [[ gha__googleapis__release_please_action ]]
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -30,14 +30,14 @@ jobs:
     needs: release-please
     if: ${{ needs.release-please.outputs.pr }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: [[ gha__actions__checkout ]]
         with:
           # We must check out the branch created by release-please
           ref: ${{ fromJson(needs.release-please.outputs.pr).headBranchName }}
           fetch-depth: 0
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: [[ gha__astral_sh__setup_uv ]]
 
       - name: Update uv.lock
         run: |
@@ -49,7 +49,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Commit uv.lock
-        uses: devops-infra/action-commit-push@v1.0.3
+        uses: [[ gha__devops_infra__action_commit_push]]
         with:
           github_token: "${{ secrets.GITHUB_TOKEN }}"
           commit_prefix: "chore: "
@@ -68,7 +68,7 @@ jobs:
       BUNDLE_VAR_warehouse_name: ${{ vars.BUNDLE_VAR_WAREHOUSE_NAME }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: [[ gha__actions__checkout ]]
         with:
           ref: ${{ needs.release-please.outputs.tag_name}}
 
@@ -87,11 +87,11 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: [[ gha__actions__checkout ]]
 
       - name: Find PR(s) for commit
         id: prs-for-commit
-        uses: actions/github-script@v8
+        uses: [[ gha__actions__github_script ]]
         env:
           SHA: ${{ needs.release-please.outputs.sha }}
         with:
@@ -105,14 +105,14 @@ jobs:
             core.setOutput('numbers', JSON.stringify(numbers));
 
       - name: Add label to PR
-        uses: actions-ecosystem/action-add-labels@v1
+        uses: [[ gha__actions_ecosystem__action_add_labels]]
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}
           labels: "autorelease: published"
 
       - name: Remove label from PR
-        uses: actions-ecosystem/action-remove-labels@v1
+        uses: [[ gha__actions_ecosystem__action_add_labels ]]
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}

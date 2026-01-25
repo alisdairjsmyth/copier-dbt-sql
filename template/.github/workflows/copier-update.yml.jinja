@@ -14,17 +14,17 @@ jobs:
   update-template:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: [[ gha__actions__checkout]]
         with:
           fetch-depth: 0 # Important for copier to see git tags
 
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: [[ gha__actions__setup_python]]
         with:
           python-version: '3.12'
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: [[ gha__astral_sh__setup_uv]]
 
       - name: Run Copier Update
         run: |
@@ -52,7 +52,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.git_check.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v6
+        uses: [[ gha__peter_evans__create_pull_request ]]
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: update project from template"
