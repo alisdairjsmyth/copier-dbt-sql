@@ -4,26 +4,29 @@ from __future__ import annotations
 import pytest
 import yaml
 from pathlib import Path
+from typing import Any, Callable, Literal, Optional, Protocol, TypedDict
 
 
 # --- Single source of truth for package identifiers ---
-PKGS = {
+PKGS: dict[str, str] = {
     "ARTIFACTS": "brooklyn-data/dbt_artifacts",
     "AUTOMATE_DV": "Datavault-UK/automate_dv",
     "UTILS": "dbt-labs/dbt_utils",
     "EXPECTATIONS": "metaplane/dbt_expectations",
 }
 
+# Constrain the valid keys at type-check time
+PkgKey = Literal["ARTIFACTS", "AUTOMATE_DV", "UTILS", "EXPECTATIONS"]
+
 # Version ranges centralised and keyed by PKGS keys (not raw strings)
-PKG_VERSIONS = {
+PKG_VERSIONS: dict[PkgKey, tuple[str, str]] = {
     "ARTIFACTS": (">=2.10.0", "<2.11.0"),
     "AUTOMATE_DV": (">=0.11.4", "<0.12.0"),
     "UTILS": (">=1.3.3", "<1.4.0"),
     "EXPECTATIONS": (">=0.10.10", "<0.11.0"),
 }
 
-# If the rendered packages.yml has a specific order, capture it once here
-PKG_ORDER = ["ARTIFACTS", "AUTOMATE_DV", "UTILS", "EXPECTATIONS"]
+PKG_ORDER: list[PkgKey] = ["ARTIFACTS", "AUTOMATE_DV", "UTILS", "EXPECTATIONS"]
 
 
 # ---------------- small utilities ----------------
@@ -35,11 +38,27 @@ def _load_yaml(path: Path) -> dict:
         return yaml.safe_load(f)
 
 
+class PackageSpec(TypedDict):
+    package: str
+    version: list[str]
+
+
 def _expected_packages(
-    *, with_utils, with_artifacts, with_expectations, with_automate_dv
-):
-    """Return expected 'packages' list or None, with a stable order."""
-    include_keys = []
+    *,
+    with_utils: bool,
+    with_artifacts: bool,
+    with_expectations: bool,
+    with_automate_dv: bool,
+) -> Optional[list[PackageSpec]]:
+    """
+    Build the expected 'packages' list (or None) for packages.yml.
+
+    Returns:
+        None when no packages are expected (i.e., template renders `packages: null`),
+        otherwise a list of {package, version} dicts in a stable order.
+    """
+    include_keys: list[PkgKey] = []
+
     if with_artifacts:
         include_keys.append("ARTIFACTS")
     if with_automate_dv:
@@ -53,10 +72,10 @@ def _expected_packages(
     missing = [k for k in include_keys if k not in PKG_VERSIONS]
     assert not missing, f"Missing PKG_VERSIONS entries for: {missing}"
 
-    packages = [
+    packages: list[PackageSpec] = [
         {
-            "package": PKGS[key],
-            "version": list(PKG_VERSIONS[key]),
+            "package": PKGS[key],  # Pkg name from single source of truth
+            "version": list(PKG_VERSIONS[key]),  # e.g. [">=2.10.0", "<2.11.0"]
         }
         for key in PKG_ORDER
         if key in include_keys
@@ -64,24 +83,51 @@ def _expected_packages(
     return packages or None
 
 
-def _expected_vars(with_automate_dv: bool):
+class VarsSpec(TypedDict):
+    hash: str
+    concat_string: str
+    null_placeholder_string: str
+    hash_content_casing: str
+    enable_native_hashes: bool
+
+
+def _expected_vars(with_automate_dv: bool) -> Optional[VarsSpec]:
     if not with_automate_dv:
         return None
-    return {
-        "hash": "SHA",
-        "concat_string": "||",
-        "null_placeholder_string": "^^",
-        "hash_content_casing": "UPPER",
-        "enable_native_hashes": True,
-    }
+    return VarsSpec(
+        hash="SHA",
+        concat_string="||",
+        null_placeholder_string="^^",
+        hash_content_casing="UPPER",
+        enable_native_hashes=True,
+    )
 
 
 # ---------------- fixtures returning callables ----------------
 
 
+# Describe the Result object returned by pytest-copie
+class AnswersSpec(TypedDict):
+    project_name: str
+    data_product_schema: str
+    with_dbt_utils: bool
+    with_dbt_artifacts: bool
+    with_dbt_expectations: bool
+    with_automate_dv: bool
+
+
+class CopierResult(Protocol):
+    answers: AnswersSpec
+    exit_code: int
+    exception: Optional[BaseException]
+    project_dir: object  # pathlib.Path-like (we only need .is_dir())
+    stdout: str | bytes | None
+    stderr: str | bytes | None
+
+
 @pytest.fixture
-def assert_generation_ok():
-    def _assert(result) -> None:
+def assert_generation_ok() -> Callable[[CopierResult], None]:
+    def _assert(result: CopierResult) -> None:
         if result.exit_code != 0 or result.exception is not None:
             stdout = getattr(result, "stdout", "")
             stderr = getattr(result, "stderr", "")
@@ -98,13 +144,22 @@ def assert_generation_ok():
 
 
 @pytest.fixture
-def assert_answers():
+def assert_answers() -> Callable[[CopierResult], None]:
     def _assert(
-        result, *, with_utils, with_artifacts, with_expectations, with_automate_dv
-    ):
+        result: CopierResult,
+        *,
+        with_utils: bool,
+        with_artifacts: bool,
+        with_expectations: bool,
+        with_automate_dv: bool,
+    ) -> None:
         ans = result.answers
+
+        # Hard-coded defaults
         assert ans["project_name"] == "dbt_project"
         assert ans["data_product_schema"] == "default"
+
+        # Feature flags
         assert bool(ans["with_dbt_utils"]) is bool(with_utils)
         assert bool(ans["with_dbt_artifacts"]) is bool(with_artifacts)
         assert bool(ans["with_dbt_expectations"]) is bool(with_expectations)
@@ -113,51 +168,125 @@ def assert_answers():
     return _assert
 
 
+class PackagesYml(TypedDict, total=False):
+    packages: Optional[list[PackageSpec]]  # None when template renders `packages: null`
+
+
 @pytest.fixture
-def assert_packages_yaml():
+def assert_packages_yaml() -> Callable[[Path], None]:
+    """
+    Fixture returning a callable that validates packages.yml
+    against centrally-defined expectations.
+    """
+
     def _assert(
         project_dir: Path,
         *,
-        with_utils,
-        with_artifacts,
-        with_expectations,
-        with_automate_dv,
-    ):
-        data = _load_yaml(project_dir / "packages.yml")
+        with_utils: bool,
+        with_artifacts: bool,
+        with_expectations: bool,
+        with_automate_dv: bool,
+    ) -> None:
+        data_raw = _load_yaml(project_dir / "packages.yml")
+
         expected = _expected_packages(
             with_utils=with_utils,
             with_artifacts=with_artifacts,
             with_expectations=with_expectations,
             with_automate_dv=with_automate_dv,
         )
+
+        # When no packages are selected, the template writes `packages: null`
+        actual = data_raw.get("packages")
+
         if expected is None:
-            assert data.get("packages") is None
-        else:
-            assert data.get("packages") == expected
+            assert actual is None, f"Expected packages: null, got: {actual!r}"
+            return
+
+        # drift guard: ensure template did not introduce unknown package names
+        actual_names = [p.get("package") for p in (actual or [])]
+        known_names = set(PKGS.values())
+        unknown = [name for name in actual_names if name not in known_names]
+        assert not unknown, f"Unexpected package(s) in template: {unknown}"
+
+        assert actual == expected, (
+            f"packages.yml mismatch:\nACTUAL:   {actual}\nEXPECTED: {expected}"
+        )
 
     return _assert
 
 
-@pytest.fixture
-def assert_dbt_project_yaml():
-    def _assert(project_dir: Path, *, with_artifacts, with_automate_dv):
-        data = _load_yaml(project_dir / "dbt_project.yml")
+class ModelsConfig(TypedDict, total=False):
+    dbt_artifacts: dict[str, Any]  # using dict to avoid '+schema' identifier issues
 
+
+class DbtProjectYml(TypedDict, total=False):
+    vars: VarsSpec
+    models: ModelsConfig
+    # More keys can be added if required: name, version, profile, etc.
+
+
+@pytest.fixture
+def assert_dbt_project_yaml() -> Callable[[Path], None]:
+    """
+    Fixture returning a callable that validates dbt_project.yml
+    for vars, models->dbt_artifacts, and on-run-end.
+    """
+
+    def _assert(
+        project_dir: Path,
+        *,
+        with_artifacts: bool,
+        with_automate_dv: bool,
+    ) -> None:
+        data_raw = _load_yaml(project_dir / "dbt_project.yml")
+        # Optional narrow typing:
+        # project: DbtProjectYml = typing.cast(DbtProjectYml, data_raw)
+
+        # ---- vars block ----
         vars_expected = _expected_vars(with_automate_dv)
         if vars_expected is None:
-            assert "vars" not in data
+            assert "vars" not in data_raw, (
+                f"Expected no 'vars' block, got: {data_raw.get('vars')!r}"
+            )
         else:
-            assert data.get("vars") == vars_expected
+            assert data_raw.get("vars") == vars_expected, (
+                f"'vars' mismatch.\nACTUAL:   {data_raw.get('vars')}\nEXPECTED: {vars_expected}"
+            )
 
-        models = data.get("models", {})
+        # ---- models -> dbt_artifacts ----
+        models = data_raw.get("models", {})
         if with_artifacts:
-            assert "dbt_artifacts" in models
-            assert models["dbt_artifacts"]["+schema"] == "dbt_artifacts"
-            assert "on-run-end" in data
-            assert data["on-run-end"] == ["{{ dbt_artifacts.upload_results(results) }}"]
+            assert isinstance(models, dict), (
+                f"'models' should be a mapping; got: {type(models).__name__}"
+            )
+            assert "dbt_artifacts" in models, (
+                f"Expected 'models.dbt_artifacts' block, got: {list(models.keys())}"
+            )
+            artifacts_cfg = models["dbt_artifacts"]
+            assert isinstance(artifacts_cfg, dict), (
+                f"'models.dbt_artifacts' should be a mapping; got: {type(artifacts_cfg).__name__}"
+            )
+            # dbt uses '+schema' key in YAML; compare exactly as rendered
+            assert artifacts_cfg.get("+schema") == "dbt_artifacts", (
+                f"Expected models.dbt_artifacts['+schema'] == 'dbt_artifacts', got: {artifacts_cfg.get('+schema')!r}"
+            )
         else:
-            assert "dbt_artifacts" not in models
-            assert "on-run-end" not in data
+            # If artifacts are disabled, the block shouldn’t exist
+            assert "dbt_artifacts" not in models, (
+                "'models.dbt_artifacts' should not be present"
+            )
+
+        # ---- on-run-end hook ----
+        if with_artifacts:
+            expected_hook = ["{{ dbt_artifacts.upload_results(results) }}"]
+            assert data_raw.get("on-run-end") == expected_hook, (
+                f"'on-run-end' mismatch.\nACTUAL:   {data_raw.get('on-run-end')}\nEXPECTED: {expected_hook}"
+            )
+        else:
+            assert "on-run-end" not in data_raw, (
+                "Unexpected 'on-run-end' when artifacts are disabled"
+            )
 
     return _assert
 
