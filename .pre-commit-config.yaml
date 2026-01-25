@@ -29,3 +29,14 @@ repos:
         name: "Fixer · end-of-file-fixer"
       - id: trailing-whitespace
         name: "Fixer · trailing-whitespace"
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.14.10
+    hooks:
+      # Run the linter.
+      - id: ruff-check
+        name: "python · Lint and perform safe auto-fixes with Ruff"
+        args: [--fix]
+      # Run the formatter.
+      - id: ruff-format
+        name: "python · Format with Ruff"

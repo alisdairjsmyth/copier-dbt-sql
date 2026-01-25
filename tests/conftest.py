@@ -166,6 +166,19 @@ def assert_dbt_project_yaml():
             False,
             False,
         ),
+        (
+            "inverse_options",
+            {
+                "with_dbt_utils": False,
+                "with_dbt_artifacts": False,
+                "with_dbt_expectations": True,
+                "with_automate_dv": True,
+            },
+            False,
+            False,
+            True,
+            True,
+        ),
     ],
     ids=lambda p: p[0] if isinstance(p, tuple) else str(p),
 )
