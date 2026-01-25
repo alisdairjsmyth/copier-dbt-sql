@@ -104,6 +104,66 @@ dev_databricks_host:
   help: Please provide the Databricks workspace host for development deployments.
   default: https://dbc-97f40495-e782.cloud.databricks.com/
 
+gha__actions__checkout:
+  when: false
+  type: str
+  help: "Version of actions/checkout action to use in GitHub Actions workflows."
+  default: "actions/checkout@v6"
+
+gha__actions__github_script:
+  when: false
+  type: str
+  help: "Version of actions/github-script action to use in GitHub Actions workflows."
+  default: "actions/github-script@v8"
+
+gha__actions__setup_python:
+  when: false
+  type: str
+  help: "Version of actions/setup-python action to use in GitHub Actions workflows."
+  default: "actions/setup-python@v6"
+
+gha__actions_ecosystem__action_add_labels:
+  when: false
+  type: str
+  help: "Version of actions-ecosystem/action-add-labels to use in GitHub Actions workflows."
+  default: "actions-ecosystem/action-add-labels@v1"
+
+gha__actions_ecosystem__action_remove_labels:
+  when: false
+  type: str
+  help: "Version of actions-ecosystem/action-remove-labels to use in GitHub Actions workflows."
+  default: "actions-ecosystem/action-remove-labels@v1"
+
+gha__astral_sh__setup_uv:
+  when: false
+  type: str
+  help: "Version of astral-sh/setup-uv action to use in GitHub Actions workflows."
+  default: "astral-sh/setup-uv@v7"
+
+gha__devops_infra__action_commit_push:
+  when: false
+  type: str
+  help: "Version of devops-infra/action-commit-push to use in GitHub Actions workflows."
+  default: "devops-infra/action-commit-push@v1.0.3"
+
+gha__googleapis__release_please_action:
+  when: false
+  type: str
+  help: "Version of googleapis/release-please-action to use in GitHub Actions workflows."
+  default: "googleapis/release-please-action@v4"
+
+gha__peter_evans__create_pull_request:
+  when: false
+  type: str
+  help: "Version of peter-evans/create-pull-request action to use in GitHub Actions workflows."
+  default: "peter-evans/create-pull-request@v6"
+
+gha__yuzutech__annotations_action:
+  when: false
+  type: str
+  help: "Version of yuzutech/annotations-action to use in GitHub Actions workflows."
+  default: "yuzutech/annotations-action@v0.3.0"
+
 prd_catalog:
   when: false
   type: str
