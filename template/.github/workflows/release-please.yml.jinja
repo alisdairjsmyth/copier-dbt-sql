@@ -112,7 +112,7 @@ jobs:
           labels: "autorelease: published"
 
       - name: Remove label from PR
-        uses: [[ gha__actions_ecosystem__action_add_labels ]]
+        uses: [[ gha__actions_ecosystem__action_remove_labels]]
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}
