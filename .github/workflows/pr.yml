@@ -5,7 +5,7 @@ on:
     types: [edited, opened, reopened, synchronize]
 
 jobs:
-  title:
+  check-title:
     runs-on: ubuntu-latest
 
     name: Check PR title
@@ -17,3 +17,32 @@ jobs:
       - name: Check PR title
         run: |
           uvx --from=commitizen cz check --message "${{ github.event.pull_request.title }}"
+
+  run-tests:
+    name: Run pytest
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Sync dependencies (dev)
+        run: |
+          uv sync --locked --all-extras --dev
+
+      - name: Run pytest
+        run: |
+          # Generate a JUnit report for debugging (optional)
+          mkdir -p reports
+          uv run pytest -q --maxfail=1 --disable-warnings --junitxml=reports/junit.xml
