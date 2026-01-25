@@ -1,4 +1,3 @@
-
 # tests/conftest.py
 from __future__ import annotations
 
@@ -9,23 +8,41 @@ from pathlib import Path
 
 # ---------------- small utilities ----------------
 
+
 def _load_yaml(path: Path) -> dict:
     assert path.exists(), f"Expected file not found: {path}"
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
-def _expected_packages(*, with_utils: bool, with_artifacts: bool,
-                       with_expectations: bool, with_automate_dv: bool):
+def _expected_packages(
+    *,
+    with_utils: bool,
+    with_artifacts: bool,
+    with_expectations: bool,
+    with_automate_dv: bool,
+):
     pkgs = []
     if with_artifacts:
-        pkgs.append({"package": "brooklyn-data/dbt_artifacts", "version": [">=2.10.0", "<2.11.0"]})
+        pkgs.append(
+            {
+                "package": "brooklyn-data/dbt_artifacts",
+                "version": [">=2.10.0", "<2.11.0"],
+            }
+        )
     if with_automate_dv:
-        pkgs.append({"package": "Datavault-UK/automate_dv", "version": [">=0.11.4", "<0.12.0"]})
+        pkgs.append(
+            {"package": "Datavault-UK/automate_dv", "version": [">=0.11.4", "<0.12.0"]}
+        )
     if with_utils:
         pkgs.append({"package": "dbt-labs/dbt_utils", "version": [">=1.3.3", "<1.4.0"]})
     if with_expectations:
-        pkgs.append({"package": "metaplane/dbt_expectations", "version": [">=0.10.10", "<0.11.0"]})
+        pkgs.append(
+            {
+                "package": "metaplane/dbt_expectations",
+                "version": [">=0.10.10", "<0.11.0"],
+            }
+        )
     return pkgs or None
 
 
@@ -43,6 +60,7 @@ def _expected_vars(with_automate_dv: bool):
 
 # ---------------- fixtures returning callables ----------------
 
+
 @pytest.fixture
 def assert_generation_ok():
     def _assert(result) -> None:
@@ -57,12 +75,15 @@ def assert_generation_ok():
                 f"stderr:\n{stderr}\n"
             )
         assert result.project_dir.is_dir()
+
     return _assert
 
 
 @pytest.fixture
 def assert_answers():
-    def _assert(result, *, with_utils, with_artifacts, with_expectations, with_automate_dv):
+    def _assert(
+        result, *, with_utils, with_artifacts, with_expectations, with_automate_dv
+    ):
         ans = result.answers
         assert ans["project_name"] == "dbt_project"
         assert ans["data_product_schema"] == "default"
@@ -70,12 +91,20 @@ def assert_answers():
         assert bool(ans["with_dbt_artifacts"]) is bool(with_artifacts)
         assert bool(ans["with_dbt_expectations"]) is bool(with_expectations)
         assert bool(ans["with_automate_dv"]) is bool(with_automate_dv)
+
     return _assert
 
 
 @pytest.fixture
 def assert_packages_yaml():
-    def _assert(project_dir: Path, *, with_utils, with_artifacts, with_expectations, with_automate_dv):
+    def _assert(
+        project_dir: Path,
+        *,
+        with_utils,
+        with_artifacts,
+        with_expectations,
+        with_automate_dv,
+    ):
         data = _load_yaml(project_dir / "packages.yml")
         expected = _expected_packages(
             with_utils=with_utils,
@@ -87,6 +116,7 @@ def assert_packages_yaml():
             assert data.get("packages") is None
         else:
             assert data.get("packages") == expected
+
     return _assert
 
 
@@ -110,16 +140,32 @@ def assert_dbt_project_yaml():
         else:
             assert "dbt_artifacts" not in models
             assert "on-run-end" not in data
+
     return _assert
 
 
 # ---------------- scenario fixture (parametrized) ----------------
 
+
 @pytest.fixture(
     params=[
         ("defaults", {}, True, True, False, False),
-        ("all_true", {"with_dbt_expectations": True, "with_automate_dv": True}, True, True, True, True),
-        ("all_false", {"with_dbt_utils": False, "with_dbt_artifacts": False}, False, False, False, False),
+        (
+            "all_true",
+            {"with_dbt_expectations": True, "with_automate_dv": True},
+            True,
+            True,
+            True,
+            True,
+        ),
+        (
+            "all_false",
+            {"with_dbt_utils": False, "with_dbt_artifacts": False},
+            False,
+            False,
+            False,
+            False,
+        ),
     ],
     ids=lambda p: p[0] if isinstance(p, tuple) else str(p),
 )
