@@ -9,6 +9,14 @@
 
 - include changelog in github release
 
+## [0.21.4](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.3...v0.21.4) (2026-01-25)
+
+
+### 🐛 Bug Fixes
+
+* inclusion of kebab name in pyproject.toml ([#87](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/87)) ([f6ea592](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/f6ea5920fcce3dd30ec04ce984483b1f58a7ccdc))
+* schedule github action checks weekly ([4074b07](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/4074b07e8d24c1765a89a06aea4c0f36d8111960))
+
 ## [0.21.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.2...v0.21.3) (2026-01-24)
 
 
