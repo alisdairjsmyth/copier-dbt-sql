@@ -110,7 +110,7 @@ prd_catalog:
   help: "Name of the production catalog - common"
   default: prd_dbt
 
-project_name_kecab_case:
+project_name_kebab_case:
   when: false
   type: str
   help: "Project name in kebab-case."
