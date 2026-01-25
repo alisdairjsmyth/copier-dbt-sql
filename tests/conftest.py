@@ -33,12 +33,44 @@ PKG_ORDER: list[PkgKey] = ["ARTIFACTS", "AUTOMATE_DV", "UTILS", "EXPECTATIONS"]
 
 
 def _load_yaml(path: Path) -> dict:
+    """
+    Load a YAML file and return the parsed Python structure.
+
+    - Asserts that the file exists to fail fast with a helpful error message.
+    - Uses `yaml.safe_load`, so the return value is typically a `dict` (or `list`).
+
+    Parameters
+    ----------
+    path : Path
+        Full path to the YAML file.
+
+    Returns
+    -------
+    dict
+        Parsed YAML content.
+
+    Raises
+    ------
+    AssertionError
+        If the file does not exist.
+    """
     assert path.exists(), f"Expected file not found: {path}"
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
 class PackageSpec(TypedDict):
+    """
+    Expected entry in `packages.yml`.
+
+    Keys
+    ----
+    package : str
+        Fully-qualified dbt package name (e.g. "dbt-labs/dbt_utils")
+    version : list[str]
+        Two-element list expressing a range, e.g. [">=1.3.3", "<1.4.0"]
+    """
+
     package: str
     version: list[str]
 
@@ -51,11 +83,28 @@ def _expected_packages(
     with_automate_dv: bool,
 ) -> Optional[list[PackageSpec]]:
     """
-    Build the expected 'packages' list (or None) for packages.yml.
+    Build the expected `packages.yml` content based on feature flags.
 
-    Returns:
-        None when no packages are expected (i.e., template renders `packages: null`),
-        otherwise a list of {package, version} dicts in a stable order.
+    - Uses central constants (`PKGS`, `PKG_VERSIONS`, `PKG_ORDER`) so strings and versions
+      are defined once.
+    - Returns `None` when no packages should be present (the template renders `packages: null`).
+
+    Parameters
+    ----------
+    with_utils : bool
+        Whether dbt-utils should be included.
+    with_artifacts : bool
+        Whether dbt-artifacts should be included.
+    with_expectations : bool
+        Whether dbt-expectations should be included.
+    with_automate_dv : bool
+        Whether automate_dv should be included.
+
+    Returns
+    -------
+    Optional[list[PackageSpec]]
+        The list of `{package, version}` dictionaries in a stable order, or `None`
+        if no packages are expected.
     """
     include_keys: list[PkgKey] = []
 
@@ -84,6 +133,10 @@ def _expected_packages(
 
 
 class VarsSpec(TypedDict):
+    """
+    Expected shape of the `vars` block in dbt_project.yml when Automate DV is enabled.
+    """
+
     hash: str
     concat_string: str
     null_placeholder_string: str
@@ -92,6 +145,22 @@ class VarsSpec(TypedDict):
 
 
 def _expected_vars(with_automate_dv: bool) -> Optional[VarsSpec]:
+    """
+    Build the expected `vars` block for dbt_project.yml.
+
+    - When Automate DV is disabled, returns `None` and the `vars` key should be absent.
+    - When enabled, returns the full VarsSpec with the exact keys/values the template should render.
+
+    Parameters
+    ----------
+    with_automate_dv : bool
+        Whether Automate DV is enabled.
+
+    Returns
+    -------
+    Optional[VarsSpec]
+        The vars mapping when present; otherwise `None`.
+    """
     if not with_automate_dv:
         return None
     return VarsSpec(
@@ -108,6 +177,10 @@ def _expected_vars(with_automate_dv: bool) -> Optional[VarsSpec]:
 
 # Describe the Result object returned by pytest-copie
 class AnswersSpec(TypedDict):
+    """
+    Expected shape of `result.answers` saved by Copier.
+    """
+
     project_name: str
     data_product_schema: str
     with_dbt_utils: bool
@@ -117,6 +190,13 @@ class AnswersSpec(TypedDict):
 
 
 class CopierResult(Protocol):
+    """
+    Minimal protocol for the result object returned by pytest-copie.
+
+    This lets type checkers validate attribute access without importing a concrete class.
+    Expand the protocol if you use more attributes in other helpers.
+    """
+
     answers: AnswersSpec
     exit_code: int
     exception: Optional[BaseException]
@@ -127,6 +207,18 @@ class CopierResult(Protocol):
 
 @pytest.fixture
 def assert_generation_ok() -> Callable[[CopierResult], None]:
+    """
+    Return a callable that asserts a Copier generation succeeded.
+
+    The callable validates that:
+      - exit_code == 0
+      - exception is None
+      - project_dir exists
+
+    On failure, it raises an AssertionError containing exit_code, exception,
+    and any captured stdout/stderr to speed up debugging in CI.
+    """
+
     def _assert(result: CopierResult) -> None:
         if result.exit_code != 0 or result.exception is not None:
             stdout = getattr(result, "stdout", "")
@@ -145,6 +237,17 @@ def assert_generation_ok() -> Callable[[CopierResult], None]:
 
 @pytest.fixture
 def assert_answers() -> Callable[[CopierResult], None]:
+    """
+    Return a callable that asserts `result.answers` match expected defaults and flags.
+
+    Parameters (to the returned callable)
+    -------------------------------------
+    result : CopierResult
+        Copier result containing an `answers` mapping.
+    with_utils, with_artifacts, with_expectations, with_automate_dv : bool
+        Scenario flags the answers must agree with.
+    """
+
     def _assert(
         result: CopierResult,
         *,
@@ -169,14 +272,25 @@ def assert_answers() -> Callable[[CopierResult], None]:
 
 
 class PackagesYml(TypedDict, total=False):
+    """
+    Minimal typed view of packages.yml for the fields we assert on.
+    """
+
     packages: Optional[list[PackageSpec]]  # None when template renders `packages: null`
 
 
 @pytest.fixture
 def assert_packages_yaml() -> Callable[[Path], None]:
     """
-    Fixture returning a callable that validates packages.yml
-    against centrally-defined expectations.
+    Return a callable that validates `packages.yml` against central expectations.
+
+    Behavior
+    --------
+    - If no packages are expected, asserts the parsed value is `None`
+      (your template renders `packages: null`).
+    - Otherwise, validates that the full list (including order) matches the
+      output of `_expected_packages(...)`.
+    - Optionally guards against unknown package names (template drift).
     """
 
     def _assert(
@@ -217,10 +331,21 @@ def assert_packages_yaml() -> Callable[[Path], None]:
 
 
 class ModelsConfig(TypedDict, total=False):
+    """
+    Minimal typed view for `models` section of dbt_project.yml.
+
+    We keep `dbt_artifacts` as a generic mapping to allow keys like `+schema`
+    that are not valid Python identifiers (accessed dynamically at runtime).
+    """
+
     dbt_artifacts: dict[str, Any]  # using dict to avoid '+schema' identifier issues
 
 
 class DbtProjectYml(TypedDict, total=False):
+    """
+    Minimal typed view of dbt_project.yml for the fields we assert on.
+    """
+
     vars: VarsSpec
     models: ModelsConfig
     # More keys can be added if required: name, version, profile, etc.
@@ -229,8 +354,17 @@ class DbtProjectYml(TypedDict, total=False):
 @pytest.fixture
 def assert_dbt_project_yaml() -> Callable[[Path], None]:
     """
-    Fixture returning a callable that validates dbt_project.yml
-    for vars, models->dbt_artifacts, and on-run-end.
+    Return a callable that validates `dbt_project.yml` for vars, the
+    `models.dbt_artifacts` block, and the `on-run-end` hook.
+
+    Behavior
+    --------
+    - If Automate DV is disabled, asserts that the `vars` key is absent; otherwise
+      compares to `_expected_vars(...)`.
+    - If artifacts are enabled, asserts the `models.dbt_artifacts` mapping exists
+      and has `+schema: dbt_artifacts`; otherwise asserts it is absent.
+    - If artifacts are enabled, asserts the `on-run-end` hook uploads dbt artifacts;
+      otherwise asserts the key is absent.
     """
 
     def _assert(
@@ -331,7 +465,17 @@ def assert_dbt_project_yaml() -> Callable[[Path], None]:
 )
 def template_scenario(request):
     """
-    Provides:
-      name, extra_answers, with_utils, with_artifacts, with_expectations, with_automate_dv
+    Parametrized scenario provider.
+
+    Yields
+    ------
+    tuple
+        (name, extra_answers, with_utils, with_artifacts, with_expectations, with_automate_dv)
+
+    Notes
+    -----
+    - When you call `copie.copy`, pass `extra_answers or {}` to avoid sending None
+      (Copier expects a dict for user defaults).
+    - Add more tuples here to extend feature coverage.
     """
     return request.param
