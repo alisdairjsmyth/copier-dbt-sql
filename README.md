@@ -1,6 +1,8 @@
 # copier-dbt-sql
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?logo=git&logoColor=white)](https://conventionalcommits.org)
+[![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![pre-commit](https://img.shields.io/badge/pre--commit-active-yellow?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
 
 This is an experimental [copier](https://github.com/copier-org/copier) template for [dbt](https://getdbt.com) projects deployed to [Databricks](https://www.databricks.com/) within a [Databricks Asset Bundle](https://docs.databricks.com/en/dev-tools/bundles/index.html). It's useful for scaffolding out a basic project structure and configuration with modern tooling quickly.
 
