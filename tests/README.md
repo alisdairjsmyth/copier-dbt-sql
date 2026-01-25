@@ -34,6 +34,7 @@ uv run pytest -q
 Below are concise descriptions (docstrings are embedded in source).
 ### `load_yaml`
 Load and parse a YAML file, asserting it exists first.
+
 **Signature**:
 ```
 def load_yaml(path: Path) -> dict
@@ -42,6 +43,7 @@ def load_yaml(path: Path) -> dict
 
 ### `assert_generation_ok`
 Checks `copie.copy(...)` succeeded, raising a detailed assertion on failure (exit code, exception, stdout/stderr).
+
 **Signature**:
 ```
 @pytest.fixture
@@ -53,7 +55,8 @@ result = copie.copy(extra_answers=extra or {})assert_generation_ok(result)
 ```
 
 ### `assert_answers`
-Validates defaults and boolean flags in result.answers.
+Validates defaults and boolean flags in `result.answers`.
+
 **Signature**:
 ```
 @pytest.fixture
@@ -166,7 +169,8 @@ Parametrized fixture that feeds the test with scenarios:
         ),
     ]
 )
-def template_scenario(request):    return request.param
+def template_scenario(request):
+    return request.param
 ```
 Each tuple is:
 ```
