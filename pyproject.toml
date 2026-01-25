@@ -21,6 +21,28 @@ dev = [
   "ruff>=0.14.0,<1.0.0",
 ]
 
+# --- Ruff Configuration ---
+[tool.ruff]  # https://docs.astral.sh/ruff/settings/
+src = ["src", "tests"]
+target-version = "py311"
+
+[tool.ruff.format]  # https://docs.astral.sh/ruff/settings/#format
+docstring-code-format = true
+
+[tool.ruff.lint]  # https://docs.astral.sh/ruff/settings/#lint
+ignore = [
+    "D100", # Missing docstring in public module (annoying for notebooks)
+    "D104", # Missing docstring in public package
+    "PLR0913", # Too many arguments in function (common in Spark/dbt wrappers)
+]
+
+[tool.ruff.lint.isort]  # https://docs.astral.sh/ruff/settings/#lintisort
+# Ensure Spark-related imports are grouped together
+known-first-party = ["pyspark", "delta"]
+
+[tool.ruff.lint.pycodestyle]  # https://docs.astral.sh/ruff/settings/#lintpycodestyle
+max-doc-length = 100
+
 # --- Commitizen Configuration ---
 [tool.commitizen]  # https://commitizen-tools.github.io/commitizen/config/configuration_file/
 version_provider = "uv"

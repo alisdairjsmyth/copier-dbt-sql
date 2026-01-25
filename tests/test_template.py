@@ -1,6 +1,6 @@
-
 # tests/test_template.py
 from __future__ import annotations
+
 
 def test_template_configurations(
     copie,
