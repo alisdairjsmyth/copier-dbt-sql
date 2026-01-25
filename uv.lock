@@ -170,6 +170,7 @@ dev = [
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "pytest-copie" },
+    { name = "pytest-json-ctrf" },
     { name = "ruff" },
 ]
 
@@ -182,6 +183,7 @@ dev = [
     { name = "pre-commit", specifier = ">=4.5.0,<5.0.0" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-copie", specifier = ">=0.3.1" },
+    { name = "pytest-json-ctrf", specifier = ">=0.3.6" },
     { name = "ruff", specifier = ">=0.14.0,<1.0.0" },
 ]
 
@@ -597,6 +599,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c6/20/3722677a1d5364b4dd913dd0380fa437694b481feb1a1beab8b4ced7c793/pytest_copie-0.3.1.tar.gz", hash = "sha256:7120c87bbe7489cb1a6bfcef154135cdf48b61ed8e8fb9035c788a40209f344a", size = 25645, upload-time = "2025-09-29T11:06:28.192Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/25/7a/5096d153d08a47392cad8bad8b43cfdd5eee21c3a7f3021cf70cd311814b/pytest_copie-0.3.1-py3-none-any.whl", hash = "sha256:6669f5ce3e1e15a7c62b09519b07075611e7e06ee5474e20424a6d7fa975194c", size = 8933, upload-time = "2025-09-29T11:06:27.124Z" },
+]
+
+[[package]]
+name = "pytest-json-ctrf"
+version = "0.3.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7a/3d/55e1de95b82b7630e9112191d7b8b8c5a466a25591c284ccd12f6f0b6a28/pytest_json_ctrf-0.3.6.tar.gz", hash = "sha256:750f7d00d2519212271227d8e7c5870beb8d31f72f7608c0ed459a43b1e71e02", size = 6707, upload-time = "2025-12-28T11:04:59.63Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/57/60/d1b84bc0a5cc5d73e0807fe799d9a3c3dfde3abf7907667882b3c74ba4c9/pytest_json_ctrf-0.3.6-py3-none-any.whl", hash = "sha256:82231614ff52b5eec14e214761eb2d785b45c062775b315a67b44659a42f5a2d", size = 6877, upload-time = "2025-12-28T11:04:58.497Z" },
 ]
 
 [[package]]

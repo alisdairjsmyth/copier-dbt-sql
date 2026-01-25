@@ -45,11 +45,13 @@ jobs:
         run: |
           # Generate a JUnit report for debugging (optional)
           mkdir -p reports
-          uv run pytest -v --maxfail=1 --disable-warnings --junitxml=reports/junit.xml
+          uv run pytest -v --ctrf ./reports/pytest-ctrf.json
 
-      - name: Upload test report
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Publish Test Reports
+        uses: ctrf-io/github-test-reporter@v1
         with:
-          name: test-report
-          path: reports/junit.xml
+          report-path: './reports/pytest-ctrf.json'
+          pull-request-report: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: always()
