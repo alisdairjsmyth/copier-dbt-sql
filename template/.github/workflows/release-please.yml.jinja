@@ -83,6 +83,47 @@ jobs:
       production: false
     secrets: inherit
 
+  label-associated-pr:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created }}
+
+    steps:
+      - name: Checkout repo
+        uses: [[ gha__actions__checkout ]]
+
+      - name: Find PR(s) for commit
+        id: prs-for-commit
+        uses: [[ gha__actions__github_script ]]
+        env:
+          SHA: ${{ needs.release-please.outputs.sha }}
+        with:
+          script: |
+            const {owner, repo} = context.repo;
+            const sha = process.env.SHA;
+            const res = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/pulls', {
+                owner, repo, ref: sha
+            });
+            const numbers = res.data.map(pr => pr.number);
+            core.setOutput('numbers', JSON.stringify(numbers));
+
+      - name: Add label to PR
+        uses: [[ gha__actions_ecosystem__action_add_labels ]]
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}
+          labels: "autorelease: published"
+
+      - name: Remove label from PR
+        uses: [[ gha__actions_ecosystem__action_remove_labels ]]
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}
+          labels: "autorelease: tagged"
+
   # 💬 Add a comment on the PR about the deployment (DEV or TST)
   comment-deploy:
     needs: [release-please, deploy-to-dev, deploy-to-tst]
