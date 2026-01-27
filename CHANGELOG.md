@@ -9,6 +9,18 @@
 
 - include changelog in github release
 
+## [0.22.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.6...v0.22.0) (2026-01-27)
+
+
+### 🚀 New Features
+
+* reworked github action workflows ([1e7d346](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/1e7d346ea4d7ef68ebec94032cfe5a9f62a21a74))
+
+
+### 🐛 Bug Fixes
+
+* manage release-please status labels ([6e32618](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/6e326187eae5d1ede4ccdd2923d66542df6419d1))
+
 ## [0.21.6](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.5...v0.21.6) (2026-01-25)
 
 
