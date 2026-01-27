@@ -11,6 +11,11 @@ jobs:
     name: Check PR title
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+
       - name: Set up uv
         uses: astral-sh/setup-uv@v7
 
