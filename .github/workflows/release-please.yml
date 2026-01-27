@@ -3,15 +3,16 @@ on:
     branches:
       - master
 
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+permissions: read-all
 
 name: release-please
 
 jobs:
   release-please:
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
@@ -25,6 +26,8 @@ jobs:
           config-file: release-please-config.json
 
   update-uv-lock:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     needs: release-please
     if: ${{ needs.release-please.outputs.pr }}
@@ -55,6 +58,9 @@ jobs:
           commit_message: "update uv.lock"
 
   label-associated-pr:
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
