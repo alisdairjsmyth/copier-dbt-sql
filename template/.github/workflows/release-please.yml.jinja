@@ -3,10 +3,7 @@ on:
     branches:
       - master
 
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+permissions: read-all
 
 name: release-please
 
@@ -55,65 +52,105 @@ jobs:
           commit_prefix: "chore: "
           commit_message: "update uv.lock"
 
+  deploy-to-dev:
+    permissions:
+      deployments: write
+      contents: read
+    needs: release-please
+    # Run when release-please did NOT create a release (typical PR merges).
+    if: ${{ needs.release-please.outputs.release_created != 'true' }}
+    uses: ./.github/workflows/_deploy-reusable.yml
+    with:
+      environment: dev
+      # Deploy the merge commit that just landed on master
+      ref: ${{ github.sha }}
+      is_tag: false
+      production: false
+    secrets: inherit
+
   deploy-to-tst:
-    runs-on: ubuntu-latest
+    permissions:
+      deployments: write
+      contents: read
     # This job only runs if the release-please job actually created a release
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created }}
-    environment: tst
-    env:
-      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      BUNDLE_VAR_budget_policy_id: ${{ vars.BUNDLE_VAR_BUDGET_POLICY_ID }}
-      BUNDLE_VAR_warehouse_name: ${{ vars.BUNDLE_VAR_WAREHOUSE_NAME }}
+    uses: ./.github/workflows/_deploy-reusable.yml
+    with:
+      environment: tst
+      ref: ${{ needs.release-please.outputs.tag_name }}
+      is_tag: true
+      production: false
+    secrets: inherit
 
-    steps:
-      - uses: [[ gha__actions__checkout ]]
-        with:
-          ref: ${{ needs.release-please.outputs.tag_name}}
-
-      - uses: databricks/setup-cli@main
-        with:
-          version: "[[ databricks_cli_dependency ]]"
-
-      - name: Deploy Bundle to Test
-        run: databricks bundle deploy --target tst
-
-  label-associated-pr:
+  # 💬 Add a comment on the PR about the deployment (DEV or TST)
+  comment-deploy:
+    needs: [release-please, deploy-to-dev, deploy-to-tst]
+    if: ${{ always() }}
+    # Run after deploys; it'll decide which flavor to post
     runs-on: ubuntu-latest
-    # This job only runs if the release-please job actually created a release
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
-
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - name: Checkout repo
-        uses: [[ gha__actions__checkout ]]
-
-      - name: Find PR(s) for commit
-        id: prs-for-commit
+      - name: Comment on PR with deployment details
         uses: [[ gha__actions__github_script ]]
         env:
-          SHA: ${{ needs.release-please.outputs.sha }}
+          RELEASE_CREATED: ${{ needs.release-please.outputs.release_created }}
+          # DEV context (non-release path)
+          DEV_RESULT:    ${{ needs.deploy-to-dev.outputs.result }}
+          DEV_REF_SHA:   ${{ github.sha }}
+          # TST context (release path)
+          TST_RESULT:    ${{ needs.deploy-to-tst.outputs.result }}
+          TST_TAG_NAME:  ${{ needs.release-please.outputs.tag_name }}
+          TST_TAG_SHA:   ${{ needs.release-please.outputs.sha }}
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const {owner, repo} = context.repo;
-            const sha = process.env.SHA;
-            const res = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/pulls', {
-                owner, repo, ref: sha
+            const { owner, repo } = context.repo;
+            const actor = context.actor;
+            const workflow = context.workflow;
+            const runNumber = context.runNumber;
+            const releaseCreated = (process.env.RELEASE_CREATED || '').toLowerCase() === 'true';
+
+            // Pick context based on whether a release was created
+            const envName = releaseCreated ? 'tst' : 'dev';
+            const result = releaseCreated ? (process.env.TST_RESULT || 'unknown')
+                                          : (process.env.DEV_RESULT || 'unknown');
+
+            // Helper: link to the Environment activity log in the repo UI
+            const envActivityUrl = `https://github.com/${owner}/${repo}/deployments/activity_log?environment=${encodeURIComponent(envName)}`;
+            const workflowRunUrl = `https://github.com/${owner}/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+
+            // Build ref label and the commit we’ll map to a PR
+            let refLabel, refSha;
+            if (releaseCreated) {
+              refLabel = `${process.env.TST_TAG_NAME} (${process.env.TST_TAG_SHA})`;
+              refSha   = process.env.TST_TAG_SHA;
+            } else {
+              refLabel = process.env.DEV_REF_SHA;
+              refSha   = process.env.DEV_REF_SHA;
+            }
+
+            // Map commit -> PR (best effort)
+            const prsResp = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/pulls', {
+              owner, repo, ref: refSha,
+              headers: { 'Accept': 'application/vnd.github.groot-preview+json' }
             });
-            const numbers = res.data.map(pr => pr.number);
-            core.setOutput('numbers', JSON.stringify(numbers));
+            if (!prsResp.data.length) {
+              core.info(`No PR associated with ${refSha}. Skipping comment.`);
+              return;
+            }
+            const prNumber = prsResp.data[0].number;
 
-      - name: Add label to PR
-        uses: [[ gha__actions_ecosystem__action_add_labels]]
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}
-          labels: "autorelease: published"
+            // Compose the comment
+            let body = `🚀 Deployed to [${envName}](${envActivityUrl})`;
+            body += ` by @${actor} via **${workflow}**`;
+            body += ` #[${runNumber}](${workflowRunUrl})`;
 
-      - name: Remove label from PR
-        uses: [[ gha__actions_ecosystem__action_remove_labels]]
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ fromJSON(steps.prs-for-commit.outputs.numbers)[0] }}
-          labels: "autorelease: tagged"
+            // Post the comment
+            await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/comments', {
+              owner, repo,
+              issue_number: prNumber,
+              body
+            });

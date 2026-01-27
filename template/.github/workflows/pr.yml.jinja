@@ -5,10 +5,12 @@ on:
     types: [edited, opened, reopened, synchronize]
     branches: [master]
 
-permissions:
-  contents: read
-  checks: write
-  pull-requests: write
+# Default to read-only for all jobs; raise per job only if needed
+permissions: read-all
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check-title:
@@ -17,6 +19,10 @@ jobs:
     name: Check PR title
 
     steps:
+      - uses: [[ gha__actions__checkout ]]
+        with:
+          ref: ${{ github.head_ref}}
+
       - name: Set up uv
         uses: [[ gha__astral_sh__setup_uv ]]
 
@@ -24,31 +30,12 @@ jobs:
         run: |
           uvx --from=commitizen cz check --message "${{ github.event.pull_request.title }}"
 
-  deploy-to-dev:
-    runs-on: ubuntu-latest
-    environment: dev
-    env:
-      BUNDLE_VAR_budget_policy_id: ${{ vars.BUNDLE_VAR_BUDGET_POLICY_ID }}
-      BUNDLE_VAR_warehouse_name: ${{ vars.BUNDLE_VAR_WAREHOUSE_NAME }}
-      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
-      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-
-    steps:
-      - uses: [[ gha__actions__checkout ]]
-        with:
-          ref: ${{ github.head_ref}}
-
-      - uses: databricks/setup-cli@main
-        with:
-          version: "[[ databricks_cli_dependency ]]"
-
-      - name: Validate Bundle
-        run: databricks bundle validate --target dev
-
-      - name: Deploy Bundle to Development
-        run: databricks bundle deploy --target dev
-
   sqlfluff-lint:
+    # Needs to read code and publish GitHub Checks annotations
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
     name: Lint dbt project using SQLFluff
     runs-on: ubuntu-latest
     environment: dev

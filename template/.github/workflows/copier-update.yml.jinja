@@ -6,25 +6,32 @@ on:
     - cron: '0 0 * * 1'
   workflow_dispatch: # Allows you to trigger it manually for testing
 
-permissions:
-  contents: write
-  pull-requests: write
+# Default to read-only; escalate at job level only when needed
+permissions: read-all
+
+concurrency:
+  group: copier-update
+  cancel-in-progress: false  # keep the previous run if a new schedule kicks in
 
 jobs:
   update-template:
+    # This job needs to create a PR and commit via the action—grant only what's necessary
+    permissions:
+      contents: write         # allow branch/commit creation for the PR
+      pull-requests: write    # allow opening/updating the PR and applying labels
     runs-on: ubuntu-latest
     steps:
-      - uses: [[ gha__actions__checkout]]
+      - uses: [[ gha__actions__checkout ]]
         with:
           fetch-depth: 0 # Important for copier to see git tags
 
       - name: Install Python
-        uses: [[ gha__actions__setup_python]]
+        uses: [[ gha__actions__setup_python ]]
         with:
           python-version: '3.12'
 
       - name: Install uv
-        uses: [[ gha__astral_sh__setup_uv]]
+        uses: [[ gha__astral_sh__setup_uv ]]
 
       - name: Run Copier Update
         run: |
