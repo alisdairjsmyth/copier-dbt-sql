@@ -203,15 +203,17 @@ jobs:
       contents: read
       checks: write
       pull-requests: write
-    name: Lint dbt project using SQLFluff
+
+    name: Lint dbt project
     runs-on: ubuntu-latest
-    environment: dev
+
     env:
       ANNOTATIONS_FILE: ./annotations.json
       DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
       DATABRICKS_HTTP_PATH: ${{ vars.DATABRICKS_HTTP_PATH }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       DBT_PROFILES_DIR: ./ci_cd
+
     steps:
       - name: Checkoput with full history
         uses: [[ gha__actions__checkout ]]
