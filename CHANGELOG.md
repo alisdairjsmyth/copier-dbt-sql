@@ -9,6 +9,19 @@
 
 - include changelog in github release
 
+## [0.23.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.22.0...v0.23.0) (2026-01-28)
+
+
+### 🚀 New Features
+
+* add dbt-autofix checks to pr workflow ([875d076](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/875d076e60b11b84b6a203f8c5b49375c8a98740)), closes [#31](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/31)
+* add sqlfmt check ([8f3a5d9](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/8f3a5d957516c2efc980a27f75defb7598809192)), closes [#97](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/97)
+
+
+### 🐛 Bug Fixes
+
+* treat sql linting as a check rather than deployment ([d36c2d1](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/d36c2d1e3c82f6d65cdc3945900c11a71513d856)), closes [#100](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/100)
+
 ## [0.22.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.21.6...v0.22.0) (2026-01-27)
 
 
