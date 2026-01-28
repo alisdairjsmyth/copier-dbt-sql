@@ -339,3 +339,39 @@ jobs:
           title: "SQLFluff Lint"
           input: "${{ env.ANNOTATIONS_FILE }}"
           ignore-missing-file: false
+
+  check-sqlfmt:
+    permissions:
+      contents: read
+
+    name: Check SQL formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout with full history
+        uses: [[ gha__actions__checkout ]]
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: [[ gha__actions__setup_python ]]
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install uv
+        uses: [[ gha__astral_sh__setup_uv ]]
+
+      - name: Install dependencies
+        run: |
+          uv sync --locked --all-extras --dev
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+
+      - name: Run sqlfmt
+        shell: bash
+        run: |
+          source .venv/bin/activate
+          sqlfmt --diff ${{ steps.changed-files.outputs.all_changed_files }}

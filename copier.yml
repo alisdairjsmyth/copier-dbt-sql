@@ -158,6 +158,12 @@ gha__peter_evans__create_pull_request:
   help: "Version of peter-evans/create-pull-request action to use in GitHub Actions workflows."
   default: "peter-evans/create-pull-request@v8"
 
+gha__tj_actions__changed_files:
+  when: false
+  type: str
+  help: "Version of tj-actions/changed-files action to use in GitHub Actions workflows."
+  default: "tj-actions/changed-files@v46"
+
 gha__yuzutech__annotations_action:
   when: false
   type: str
