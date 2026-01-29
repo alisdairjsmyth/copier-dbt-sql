@@ -300,68 +300,32 @@ jobs:
         run: |
           uv sync --locked --all-extras --dev
 
+      - name: Get Changed Files
+        id: changed-files
+        uses: [[ gha__tj_actions__changed_files ]]
+        with:
+          files:
+            src/models/**/**.sql
+
       - name: Check dbt connection
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: |
           source .venv/bin/activate
           dbt debug
           dbt deps
 
-      - name: Get changed files
-        id: get_file_changes
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          # Show context
-          echo "Base ref: ${{ github.base_ref }}"
-          echo "Head ref: ${{ github.head_ref }}"
-
-          # List files changed between base...HEAD in the PR
-          mapfile -t FILES_ALL < <(git diff --name-only --diff-filter=ACMR "origin/${{ github.base_ref }}"...HEAD)
-
-          # Join as space-separated
-          FILES_SPC=$(printf './%s ' "${FILES_ALL[@]}")
-
-          # Export outputs for subsequent steps
-          {
-            echo "files_modified=${FILES_SPC% }"
-            echo "files_all<<EOF"
-            printf '%s\n' "${FILES_ALL[@]}"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
-      - name: Get new and changed .sql files in ./src/models to lint
-        id: get_files_to_lint
-        shell: bash
-        run: |
-          set -euo pipefail
-          files=$(
-            printf '%s\n' ${{ steps.get_file_changes.outputs.files_modified }} \
-              | tr -s ' ' '\n' \
-              | grep -E '^(\./)?src/models/.*\.sql$' \
-              | sort -u \
-              || true
-          )
-          {
-            echo "lintees<<EOF"
-            printf '%s\n' "$files"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-
       - name: Lint dbt models
-        if: steps.get_files_to_lint.outputs.lintees != ''
+        if: steps.changed-files.outputs.all_changed_files != ''
         shell: bash
         run: |
           source .venv/bin/activate
-          # Read multiline output and pass to sqlfluff via xargs
-          echo "${{ steps.get_files_to_lint.outputs.lintees }}" \
-            [% raw %]| grep -v '^[[:space:]]*$' \[% endraw %]
-            | xargs -r sqlfluff lint \
-              --templater dbt \
-              --format github-annotation \
-              --annotation-level failure \
-              --nofail \
-              --write-output "$ANNOTATIONS_FILE" || true
+          sqlfluff lint \
+            ${{ steps.changed-files.outputs.all_changed_files }} \
+            --templater dbt \
+            --format github-annotation \
+            --annotation-level failure \
+            --nofail \
+            --write-output "$ANNOTATIONS_FILE" || true
 
       - name: Check for annotations
         id: check_annotations
