@@ -9,6 +9,15 @@
 
 - include changelog in github release
 
+## [0.24.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.23.0...v0.24.0) (2026-01-29)
+
+
+### 🚀 New Features
+
+* add check-pre-commit job to pr workflow ([a9881c3](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/a9881c3c487bced4dd791fa0c6dcdcc892ff38b5)), closes [#101](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/101)
+* introduce composite actions ([637b539](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/637b539f0a2bfe56de0c1a204b5cd304f18437b5))
+* refactor sqlfluff-lint job to use tj-actions/changed-files ([392c94d](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/392c94da91f149e4f097c19f7b7389a9c143a192))
+
 ## [0.23.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.22.0...v0.23.0) (2026-01-28)
 
 
