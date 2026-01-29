@@ -30,6 +30,69 @@ jobs:
         run: |
           uvx --from=commitizen cz check --message "${{ github.event.pull_request.title }}"
 
+  check-pre-commit:
+    name: Check pre-commits
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install dependencies
+        run: |
+          uv sync --locked --all-extras --dev
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+
+      # Prepare a safe, NUL-delimited file list for xargs
+      - name: Prepare file list
+        if: ${{ steps.changed-files.outputs.any_changed == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Convert the space-delimited output to a NUL-delimited list to handle spaces and special chars
+          printf '%s\0' ${{ steps.changed-files.outputs.all_changed_files }} > files.nul
+
+      - name: Run pre-commit hooks with xargs
+        if: ${{ steps.changed-files.outputs.any_changed == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          source .venv/bin/activate
+
+          # Number of  files per pre-commit invocation
+          BATCH_SIZE=200
+
+          # Function to run a pre-commit hook over the NUL-delimited files in batches
+          run_hook() {
+            local hook="$1"
+            echo "=== Running pre-commit hook: ${hook} ==="
+            # -0: NUL-delimited input
+            # -a files.nul: read from file
+            # -r: do nothing if input is empty
+            # -n $BATCH_SIZE: pass up to N files per invocation to avoid ARG_MAX issues
+            xargs -0 -a files.nul -r -n "$BATCH_SIZE" pre-commit run "$hook" --files
+          }
+
+          run_hook "check-yaml"
+          run_hook "check-toml"
+          run_hook "end-of-file-fixer"
+          run_hook "trailing-whitespace"
+
   check-dbt-autofix:
     # Add permissions to allow posting PR comments
     permissions:
