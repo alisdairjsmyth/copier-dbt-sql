@@ -36,18 +36,18 @@ jobs:
 
     steps:
       - name: Checkout with full history
-        uses: actions/checkout@v6
+        uses: [[ gha__actions__checkout ]]
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: [[ gha__actions__setup_python ]]
         with:
           python-version-file: "pyproject.toml"
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
+        uses: [[ gha__astral_sh__setup_uv ]]
 
       - name: Install dependencies
         run: |
@@ -55,7 +55,7 @@ jobs:
 
       - name: Get Changed Files
         id: changed-files
-        uses: tj-actions/changed-files@v46
+        uses: [[ gha__tj_actions__changed_files ]]
 
       # Prepare a safe, NUL-delimited file list for xargs
       - name: Prepare file list
