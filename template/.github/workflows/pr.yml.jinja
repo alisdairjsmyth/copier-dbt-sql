@@ -15,64 +15,52 @@ concurrency:
 jobs:
   check-title:
     runs-on: ubuntu-latest
-
     name: Check PR title
-
     steps:
-      - uses: [[ gha__actions__checkout ]]
+      - name: Checkout
+        uses: [[ gha__actions__checkout ]]
         with:
-          ref: ${{ github.head_ref}}
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
-      - name: Set up uv
-        uses: [[ gha__astral_sh__setup_uv ]]
+      - name: Set up Python, install uv, and sync dependencies
+        uses: ./.github/actions/common-setup
+        with:
+          install-deps: true
 
       - name: Check PR title
         run: |
-          uvx --from=commitizen cz check --message "${{ github.event.pull_request.title }}"
+          uv run cz check --message "${{ github.event.pull_request.title }}"
 
   check-pre-commit:
     name: Check pre-commits
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout with full history
+      - name: Checkout
         uses: [[ gha__actions__checkout ]]
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: [[ gha__actions__setup_python ]]
+      - name: Set up Python, install uv, and sync dependencies
+        uses: ./.github/actions/common-setup
         with:
-          python-version-file: "pyproject.toml"
-
-      - name: Install uv
-        uses: [[ gha__astral_sh__setup_uv ]]
-
-      - name: Install dependencies
-        run: |
-          uv sync --locked --all-extras --dev
+          install-deps: true
 
       - name: Get Changed Files
         id: changed-files
-        uses: [[ gha__tj_actions__changed_files ]]
+        uses: ./.github/actions/changed-files-to-nul
+        with:
+          output: ${{ runner.temp }}/changed-files.nul
 
-      # Prepare a safe, NUL-delimited file list for xargs
-      - name: Prepare file list
+      - name: Run pre-commit hooks
         if: ${{ steps.changed-files.outputs.any_changed == 'true' }}
         shell: bash
+        env:
+          FILES_NUL: ${{ steps.changed-files.outputs.file_list_path }}
         run: |
           set -euo pipefail
-          # Convert the space-delimited output to a NUL-delimited list to handle spaces and special chars
-          printf '%s\0' ${{ steps.changed-files.outputs.all_changed_files }} > files.nul
-
-      - name: Run pre-commit hooks with xargs
-        if: ${{ steps.changed-files.outputs.any_changed == 'true' }}
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          source .venv/bin/activate
 
           # Number of  files per pre-commit invocation
           BATCH_SIZE=200
@@ -85,7 +73,8 @@ jobs:
             # -a files.nul: read from file
             # -r: do nothing if input is empty
             # -n $BATCH_SIZE: pass up to N files per invocation to avoid ARG_MAX issues
-            xargs -0 -a files.nul -r -n "$BATCH_SIZE" pre-commit run "$hook" --files
+            xargs -0 -a "$FILES_NUL" -r -n "$BATCH_SIZE" \
+              uv run pre-commit run "$hook" --files
           }
 
           run_hook "check-yaml"
@@ -107,19 +96,16 @@ jobs:
       DBT_AUTOFIX_JSON: ./autofix.jsonl
 
     steps:
-      - name: Checkout with full history
+      - name: Checkout
         uses: [[ gha__actions__checkout ]]
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: [[ gha__actions__setup_python ]]
+      - name: Set up Python, and install uv
+        uses: ./.github/actions/common-setup
         with:
-          python-version-file: "pyproject.toml"
-
-      - name: Install uv
-        uses: [[ gha__astral_sh__setup_uv ]]
+          install-deps: true
 
       # Capture JSONL output to a file (do not fail workflow if command fails)
       - name: Run dbt-autofix (JSONL)
@@ -127,7 +113,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          uvx dbt-autofix deprecations --dry-run --json | tee "$DBT_AUTOFIX_JSON" || true
+          uv run dbt-autofix deprecations --dry-run --json | tee "$DBT_AUTOFIX_JSON" || true
           echo "dbt-autofix completed; output captured in $DBT_AUTOFIX_JSON (workflow will not fail)."
 
       # Build a Markdown report from the JSONL
@@ -269,7 +255,6 @@ jobs:
 
     name: Lint dbt project
     runs-on: ubuntu-latest
-
     env:
       ANNOTATIONS_FILE: ./annotations.json
       DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
@@ -278,58 +263,51 @@ jobs:
       DBT_PROFILES_DIR: ./ci_cd
 
     steps:
-      - name: Checkoput with full history
+      - name: Checkout
         uses: [[ gha__actions__checkout ]]
         with:
-          ref: ${{ github.head_ref}}
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Fetch base branch
-        run: |
-          git fetch origin "${{ github.base_ref }}"
-
-      - name: Set up Python
-        uses: [[ gha__actions__setup_python ]]
+      - name: Set up Python, install uv, and sync dependencies
+        uses: ./.github/actions/common-setup
         with:
-          python-version-file: "pyproject.toml"
-
-      - name: Install uv
-        uses: [[ gha__astral_sh__setup_uv ]]
-
-      - name: Install dependencies
-        run: |
-          uv sync --locked --all-extras --dev
+          install-deps: true
 
       - name: Get Changed Files
         id: changed-files
-        uses: [[ gha__tj_actions__changed_files ]]
+        uses: ./.github/actions/changed-files-to-nul
         with:
           files:
             src/models/**/**.sql
+          output: ${{ runner.temp }}/changed-files.nul
 
       - name: Check dbt connection
         if: steps.changed-files.outputs.all_changed_files != ''
         run: |
-          source .venv/bin/activate
-          dbt debug
-          dbt deps
+          uv run dbt debug
+          uv run dbt deps
 
       - name: Lint dbt models
-        if: steps.changed-files.outputs.all_changed_files != ''
+        if: steps.changed-files.outputs.any_changed == 'true'
         shell: bash
+        env:
+          FILES_NUL: ${{ steps.changed-files.outputs.file_list_path }}
         run: |
-          source .venv/bin/activate
-          sqlfluff lint \
-            ${{ steps.changed-files.outputs.all_changed_files }} \
-            --templater dbt \
-            --format github-annotation \
-            --annotation-level failure \
-            --nofail \
-            --write-output "$ANNOTATIONS_FILE" || true
+          # Number of  files per pre-commit invocation
+          BATCH_SIZE=200
+
+          xargs -0 -a "$FILES_NUL" -r -n "$BATCH_SIZE" \
+            uv run sqlfluff lint \
+              --templater dbt \
+              --format github-annotation \
+              --annotation-level failure \
+              --nofail \
+              --write-output "$ANNOTATIONS_FILE" || true
 
       - name: Check for annotations
         id: check_annotations
-        if: steps.get_files_to_lint.outputs.lintees != ''
+        if: steps.changed-files.outputs.all_changed_files != ''
         shell: bash
         run: |
           set -euo pipefail
@@ -343,10 +321,9 @@ jobs:
 
       - name: Show annotations file contents
         shell: bash
-        if: steps.get_files_to_lint.outputs.lintees != ''
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: |
           echo "----- Debug: Checking $ANNOTATIONS_FILE -----"
-
           if [ ! -f "$ANNOTATIONS_FILE" ]; then
             echo "$ANNOTATIONS_FILE does NOT exist."
             exit 0
@@ -375,30 +352,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout with full history
+      - name: Checkout
         uses: [[ gha__actions__checkout ]]
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: [[ gha__actions__setup_python ]]
+      - name: Set up Python, install uv, and sync dependencies
+        uses: ./.github/actions/common-setup
         with:
-          python-version-file: "pyproject.toml"
-
-      - name: Install uv
-        uses: [[ gha__astral_sh__setup_uv ]]
-
-      - name: Install dependencies
-        run: |
-          uv sync --locked --all-extras --dev
+          install-deps: true
 
       - name: Get Changed Files
         id: changed-files
-        uses: tj-actions/changed-files@v46
+        uses: [[ gha__tj_actions__changed_files ]]
 
       - name: Run sqlfmt
         shell: bash
         run: |
-          source .venv/bin/activate
-          sqlfmt --diff ${{ steps.changed-files.outputs.all_changed_files }}
+          uv run sqlfmt --diff ${{ steps.changed-files.outputs.all_changed_files }}

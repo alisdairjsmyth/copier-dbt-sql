@@ -1,0 +1,25 @@
+name: "Common Setup"
+description: "Set up Python, install uv, and (optionally) sync dependencies"
+inputs:
+  install-deps:
+    description: "Install project dependencies"
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: [[ gha__actions__setup_python ]]
+      with:
+        python-version-file: "pyproject.toml"
+
+    - name: Install uv
+      uses: [[ gha__astral_sh__setup_uv ]]
+
+    - name: Install dependencies (uv sync)
+      if: ${{ inputs.install-deps == 'true' }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        uv sync --locked --all-extras --dev

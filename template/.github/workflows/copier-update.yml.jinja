@@ -23,15 +23,13 @@ jobs:
     steps:
       - uses: [[ gha__actions__checkout ]]
         with:
-          fetch-depth: 0 # Important for copier to see git tags
+          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Install Python
-        uses: [[ gha__actions__setup_python ]]
+      - name: Set up Python, and install uv
+        uses: ./.github/actions/common-setup
         with:
-          python-version: '3.12'
-
-      - name: Install uv
-        uses: [[ gha__astral_sh__setup_uv ]]
+          install-deps: false
 
       - name: Run Copier Update
         run: |
