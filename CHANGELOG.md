@@ -9,6 +9,26 @@
 
 - include changelog in github release
 
+## [0.25.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.24.0...v0.25.0) (2026-01-30)
+
+
+### 🚀 New Features
+
+* add check-dbt-docs ([c96f5c0](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/c96f5c09f7baf0a376f81a1d6036082062e4d20d)), closes [#98](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/98)
+* add editorconfig support ([4573467](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/457346771a7a9687a75ffddbab6b2fb5d7ce0548)), closes [#111](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/111)
+* extend .gitignore for ruff and python ([e359cd9](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/e359cd9e8593bd844e570cfa3c0b465ceda37720)), closes [#113](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/113)
+* refactor comment-deploy ([ec9ef1e](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/ec9ef1e549a44e38ac0e53a75aabcd19a0add23e)), closes [#105](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/105)
+
+
+### 🐛 Bug Fixes
+
+* use marketplace action to comment on pr ([64e9312](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/64e93125b85fa58beea910cd3e3c9199e1141540)), closes [#104](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/104)
+
+
+### ⚙️ Maintenance
+
+* update line endings ([427298a](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/427298a0e99ff4ecafa1789ecc7ff1d104b1c355))
+
 ## [0.24.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.23.0...v0.24.0) (2026-01-29)
 
 
