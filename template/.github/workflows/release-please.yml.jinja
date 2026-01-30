@@ -220,10 +220,12 @@ jobs:
             })();
 
             let body = `<!-- deploy-comment -->\n`;
+            [% raw %]
             body += `**${status} Deployed to [${envName}](${envActivityUrl})**`;
             body += ` by @${actor} via **${workflow}** [#${runNumber}](${workflowRunUrl})\n`;
             body += `- Result: \`${result}\`\n`;
             body += `- Ref: \`${refLabel}\`\n`;
+            [% endraw %]
 
             return body;
         env:
