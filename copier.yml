@@ -152,6 +152,12 @@ gha__googleapis__release_please_action:
   help: "Version of googleapis/release-please-action to use in GitHub Actions workflows."
   default: "googleapis/release-please-action@v4"
 
+gha_jwalton__gh_find_current_pr:
+  when: false
+  type: str
+  help: "Version of jwalton/gh-find-current-pr to use in GitHub Actions workflows."
+  default: "jwalton/gh-find-current-pr@v1"
+
 gha__mshick__add_pr_comment:
   when false:
   type: str

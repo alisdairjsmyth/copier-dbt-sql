@@ -127,71 +127,117 @@ jobs:
   # 💬 Add a comment on the PR about the deployment (DEV or TST)
   comment-deploy:
     needs: [release-please, deploy-to-dev, deploy-to-tst]
-    if: ${{ always() }}
-    # Run after deploys; it'll decide which flavor to post
+    if: ${{ always() }}          # run regardless of upstream status; steps will decide behavior
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
+
+    env:
+      # Inputs from upstream jobs
+      RELEASE_CREATED: ${{ needs.release-please.outputs.release_created }}
+      DEV_RESULT:      ${{ needs.deploy-to-dev.outputs.result }}
+      DEV_REF_SHA:     ${{ github.sha }}
+      TST_RESULT:      ${{ needs.deploy-to-tst.outputs.result }}
+      TST_TAG_NAME:    ${{ needs.release-please.outputs.tag_name }}
+      TST_TAG_SHA:     ${{ needs.release-please.outputs.sha }}
+
     steps:
-      - name: Comment on PR with deployment details
-        uses: [[ gha__actions__github_script ]]
-        env:
-          RELEASE_CREATED: ${{ needs.release-please.outputs.release_created }}
-          # DEV context (non-release path)
-          DEV_RESULT:    ${{ needs.deploy-to-dev.outputs.result }}
-          DEV_REF_SHA:   ${{ github.sha }}
-          # TST context (release path)
-          TST_RESULT:    ${{ needs.deploy-to-tst.outputs.result }}
-          TST_TAG_NAME:  ${{ needs.release-please.outputs.tag_name }}
-          TST_TAG_SHA:   ${{ needs.release-please.outputs.sha }}
+      - name: Checkout (shallow ok)
+        uses: [[ gha__actions__checkout ]]
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      # Decide which context to use and compute the target SHA for PR lookup
+      - name: Select deployment context & ref
+        id: ctx
+        uses: [[ gha__actions__github_script ]]
+        with:
+          result-encoding: string
           script: |
-            const { owner, repo } = context.repo;
-            const actor = context.actor;
-            const workflow = context.workflow;
-            const runNumber = context.runNumber;
             const releaseCreated = (process.env.RELEASE_CREATED || '').toLowerCase() === 'true';
+            const envName  = releaseCreated ? 'tst' : 'dev';
+            const result   = releaseCreated
+              ? (process.env.TST_RESULT || 'unknown')
+              : (process.env.DEV_RESULT || 'unknown');
+            const sha      = releaseCreated
+              ? (process.env.TST_TAG_SHA || '')
+              : (process.env.DEV_REF_SHA || '');
+            const refLabel = releaseCreated
+              ? `${process.env.TST_TAG_NAME || 'unknown'} (${process.env.TST_TAG_SHA || ''})`
+              : (process.env.DEV_REF_SHA || 'unknown');
 
-            // Pick context based on whether a release was created
-            const envName = releaseCreated ? 'tst' : 'dev';
-            const result = releaseCreated ? (process.env.TST_RESULT || 'unknown')
-                                          : (process.env.DEV_RESULT || 'unknown');
-
-            // Helper: link to the Environment activity log in the repo UI
-            const envActivityUrl = `https://github.com/${owner}/${repo}/deployments/activity_log?environment=${encodeURIComponent(envName)}`;
-            const workflowRunUrl = `https://github.com/${owner}/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}`;
-
-            // Build ref label and the commit we’ll map to a PR
-            let refLabel, refSha;
-            if (releaseCreated) {
-              refLabel = `${process.env.TST_TAG_NAME} (${process.env.TST_TAG_SHA})`;
-              refSha   = process.env.TST_TAG_SHA;
+            if (!sha) {
+              core.info(`No SHA available for env=${envName}.`);
             } else {
-              refLabel = process.env.DEV_REF_SHA;
-              refSha   = process.env.DEV_REF_SHA;
+              core.info(`Using env=${envName}, sha=${sha}, result=${result}, refLabel=${refLabel}`);
             }
 
-            // Map commit -> PR (best effort)
-            const prsResp = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/pulls', {
-              owner, repo, ref: refSha,
-              headers: { 'Accept': 'application/vnd.github.groot-preview+json' }
-            });
-            if (!prsResp.data.length) {
-              core.info(`No PR associated with ${refSha}. Skipping comment.`);
-              return;
-            }
-            const prNumber = prsResp.data[0].number;
+            return JSON.stringify({ envName, result, sha, refLabel });
 
-            // Compose the comment
-            let body = `🚀 Deployed to [${envName}](${envActivityUrl})`;
-            body += ` by @${actor} via **${workflow}**`;
-            body += ` #[${runNumber}](${workflowRunUrl})`;
+      # Find the PR associated with the selected SHA
+      - name: Find PR for selected ref
+        id: find-pr
+        if: ${{ fromJSON(steps.ctx.outputs.result).sha != '' }}
+        uses: [[ gha_jwalton__gh_find_current_pr ]]
+        with:
+          sha: ${{ fromJSON(steps.ctx.outputs.result).sha }}
+          state: all
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            // Post the comment
-            await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/comments', {
-              owner, repo,
-              issue_number: prNumber,
-              body
-            });
+      # Build the markdown body for the PR comment
+      - name: Build deployment comment body
+        id: build_body
+        if: ${{ steps.find-pr.outputs.number != '' }}
+        uses: [[ gha__actions__github_script ]]
+        with:
+          result-encoding: string
+          script: |
+            const data = JSON.parse(process.env.CTX || '{}');
+            const envName  = data.envName || 'unknown';
+            const result   = data.result  || 'unknown';
+            const refLabel = data.refLabel || 'unknown';
+
+            const { owner, repo } = context.repo;
+            const actor     = context.actor;
+            const workflow  = context.workflow;
+            const runNumber = context.runNumber;
+            const runId     = process.env.GITHUB_RUN_ID;
+
+            const envActivityUrl = `https://github.com/${owner}/${repo}/deployments/activity_log?environment=${encodeURIComponent(envName)}`;
+            const workflowRunUrl = `https://github.com/${owner}/${repo}/actions/runs/${runId}`;
+
+            const status = (() => {
+              const s = (result || '').toLowerCase();
+              if (s.includes('success') || s.includes('ok') || s === 'passed') return '🚀';
+              if (s.includes('fail') || s.includes('error')) return '❌';
+              return 'ℹ️';
+            })();
+
+            let body = `<!-- deploy-comment -->\n`;
+            body += `**${status} Deployed to [${envName}](${envActivityUrl})**`;
+            body += ` by @${actor} via **${workflow}** [#${runNumber}](${workflowRunUrl})\n`;
+            body += `- Result: \`${result}\`\n`;
+            body += `- Ref: \`${refLabel}\`\n`;
+
+            return body;
+        env:
+          CTX: ${{ steps.ctx.outputs.result }}
+
+      # 4) Post (upsert) the PR comment
+      - name: Comment on PR with deployment details
+        if: ${{ steps.find-pr.outputs.number != '' }}
+        uses: [[ gha__mshick__add_pr_comment ]]
+        with:
+          issue: ${{ steps.find-pr.outputs.number }}
+          message: ${{ steps.build_body.outputs.result }}
+          message-id: deploy-comment
+          allow-repeats: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Log when no PR is found
+      - name: No PR found (skip commenting)
+        if: ${{ steps.find-pr.outputs.number == '' }}
+        run: echo "No associated PR found for selected ref; skipping comment."
