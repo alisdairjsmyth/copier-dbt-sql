@@ -9,6 +9,14 @@
 
 - include changelog in github release
 
+## [0.25.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.25.0...v0.25.1) (2026-01-30)
+
+
+### 🐛 Bug Fixes
+
+* job permissions ([1956d39](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/1956d39420a0b2e311c634afa9f70fe57ce1b2f2))
+* syntax error in copier.yml ([bd8ba37](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/bd8ba37e73192a2af721fd3e58d651a22dd388d1))
+
 ## [0.25.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.24.0...v0.25.0) (2026-01-30)
 
 
