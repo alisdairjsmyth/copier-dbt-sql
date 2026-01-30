@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.25.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.25.1...v0.25.2) (2026-01-30)
+
+
+### 🐛 Bug Fixes
+
+* escape comment body build ([ebf2712](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/ebf271266f1964d8db79d8f68e54e6414b2cf3a1))
+
 ## [0.25.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.25.0...v0.25.1) (2026-01-30)
 
 
