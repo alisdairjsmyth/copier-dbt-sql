@@ -159,7 +159,7 @@ gha_jwalton__gh_find_current_pr:
   default: "jwalton/gh-find-current-pr@v1"
 
 gha__mshick__add_pr_comment:
-  when false:
+  when: false
   type: str
   help: "Version of mshick/add-pr-comment action to use in GitHub Actions workflows."
   default: "mshick/add-pr-comment@v2"
