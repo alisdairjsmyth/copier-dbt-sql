@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.25.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.25.2...v0.25.3) (2026-01-30)
+
+
+### 🐛 Bug Fixes
+
+* remove indentation ahead of raw markers ([1f54cea](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/1f54cea3efb3173046e295cb2c41bc47413f1565))
+
 ## [0.25.2](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.25.1...v0.25.2) (2026-01-30)
 
 
