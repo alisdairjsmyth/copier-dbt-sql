@@ -359,6 +359,49 @@ jobs:
         run: |
           uv run sqlfmt --diff ${{ steps.changed-files.outputs.all_changed_files }}
 
+  check-dbt-unit-tests:
+    permissions:
+      contents: read
+      checks: write
+
+    name: Check dbt unit tests
+    runs-on: ubuntu-latest
+    env:
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_HTTP_PATH: ${{ vars.DATABRICKS_HTTP_PATH }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      DBT_PROFILES_DIR: ./ci_cd
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Python, install uv, and sync dependencies
+        uses: ./.github/actions/common-setup
+        with:
+          install-deps: true
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: ./.github/actions/changed-files-to-nul
+        with:
+          files: |
+            src/**/*.*
+            packages.yml
+            package.lock
+            dbt_project.yml
+          output: ${{ runner.temp }}/changed-files.nul
+
+      # Only run if elements of the dbt project have been modified
+      - name: Run dbt doc generate
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          uv run dbt deps
+          uv run dbt test --select "test_type:unit"
+
   check-dbt-docs:
     permissions:
       contents: read
