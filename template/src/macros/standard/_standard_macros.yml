@@ -1,0 +1,7 @@
+version: 2
+
+macros:
+  - name: log_project_version
+    description: >
+      Logs the project version to the console. Used in on-run-start to ensure visibility
+      of the project version during dbt runs, especially in CI/CD environments.

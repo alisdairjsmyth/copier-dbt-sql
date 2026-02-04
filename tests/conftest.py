@@ -137,6 +137,7 @@ class VarsSpec(TypedDict):
     Expected shape of the `vars` block in dbt_project.yml when Automate DV is enabled.
     """
 
+    project_version: str
     hash: str
     concat_string: str
     null_placeholder_string: str
@@ -148,7 +149,7 @@ def _expected_vars(with_automate_dv: bool) -> Optional[VarsSpec]:
     """
     Build the expected `vars` block for dbt_project.yml.
 
-    - When Automate DV is disabled, returns `None` and the `vars` key should be absent.
+    - When Automate DV is disabled, returns the `vars` keys that should be absent.
     - When enabled, returns the full VarsSpec with the exact keys/values the template should render.
 
     Parameters
@@ -159,17 +160,19 @@ def _expected_vars(with_automate_dv: bool) -> Optional[VarsSpec]:
     Returns
     -------
     Optional[VarsSpec]
-        The vars mapping when present; otherwise `None`.
+        The vars mapping present.
     """
     if not with_automate_dv:
-        return None
-    return VarsSpec(
-        hash="SHA",
-        concat_string="||",
-        null_placeholder_string="^^",
-        hash_content_casing="UPPER",
-        enable_native_hashes=True,
-    )
+        return VarsSpec(project_version="0.0.0")
+    else:
+        return VarsSpec(
+            project_version="0.0.0",
+            hash="SHA",
+            concat_string="||",
+            null_placeholder_string="^^",
+            hash_content_casing="UPPER",
+            enable_native_hashes=True,
+        )
 
 
 # ---------------- fixtures returning callables ----------------
@@ -359,8 +362,7 @@ def assert_dbt_project_yaml() -> Callable[[Path], None]:
 
     Behavior
     --------
-    - If Automate DV is disabled, asserts that the `vars` key is absent; otherwise
-      compares to `_expected_vars(...)`.
+    - Compares to `_expected_vars(...)`.
     - If artifacts are enabled, asserts the `models.dbt_artifacts` mapping exists
       and has `+schema: dbt_artifacts`; otherwise asserts it is absent.
     - If artifacts are enabled, asserts the `on-run-end` hook uploads dbt artifacts;
@@ -379,14 +381,9 @@ def assert_dbt_project_yaml() -> Callable[[Path], None]:
 
         # ---- vars block ----
         vars_expected = _expected_vars(with_automate_dv)
-        if vars_expected is None:
-            assert "vars" not in data_raw, (
-                f"Expected no 'vars' block, got: {data_raw.get('vars')!r}"
-            )
-        else:
-            assert data_raw.get("vars") == vars_expected, (
-                f"'vars' mismatch.\nACTUAL:   {data_raw.get('vars')}\nEXPECTED: {vars_expected}"
-            )
+        assert data_raw.get("vars") == vars_expected, (
+            f"'vars' mismatch.\nACTUAL:   {data_raw.get('vars')}\nEXPECTED: {vars_expected}"
+        )
 
         # ---- models -> dbt_artifacts ----
         models = data_raw.get("models", {})

@@ -26,9 +26,12 @@ flags:
 clean-targets: # directories to be removed by `dbt clean`
   - target
   - dbt_packages
-[%- if with_automate_dv %]
 
 vars:
+  # version is not exposed by dbt as a built-in variable, so we set a "redundant"
+  # variable here for use in macros.
+  project_version: 0.0.0 # x-release-please-version
+[%- if with_automate_dv %]
   # Automate DV hashing configuration
   # ref: https://automate-dv.readthedocs.io/en/latest/macros/#hashing-configuration
   hash: SHA
@@ -57,8 +60,11 @@ models:
     +persist_docs:
       relation: true
       columns: true
+
+on-run-start:
+  - "{{ log_project_version() }}"
 [%- if with_dbt_artifacts %]
 
 on-run-end:
-  - '{{ dbt_artifacts.upload_results(results) }}'
+  - "{{ dbt_artifacts.upload_results(results) }}"
 [%- endif %]
