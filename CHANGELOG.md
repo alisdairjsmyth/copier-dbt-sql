@@ -9,6 +9,25 @@
 
 - include changelog in github release
 
+## [0.26.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.25.3...v0.26.0) (2026-02-04)
+
+
+### 🚀 New Features
+
+* add dbt unit test framework ([e2d2457](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/e2d245725516a1ae1a7033d4089b808610e161a8))
+* add github pr extension ([bfa23f7](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/bfa23f756974b8cadc7d698e53f05a6882219639))
+* include dbt project version in execution output ([a8382e4](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/a8382e4d3bb06a560347f1eac579b71f05233fb3)), closes [#116](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/116)
+
+
+### 🐛 Bug Fixes
+
+* bump version of github action tj-actions/changed-files in template ([552e64b](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/552e64b51d6d745c6fbaea18fd3a6cdf01d9be6a))
+
+
+### ⚙️ Maintenance
+
+* add license ([e81a872](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/e81a872f63aa13894b2dc67e0daef39b6eb477fd))
+
 ## [0.25.3](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.25.2...v0.25.3) (2026-01-30)
 
 
