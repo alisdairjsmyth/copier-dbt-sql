@@ -408,6 +408,27 @@ def assert_dbt_project_yaml() -> Callable[[Path], None]:
                 "'models.dbt_artifacts' should not be present"
             )
 
+        # ---- models -> automate_dv ----
+        project_models_cfg = models["dbt_project"]
+        if with_automate_dv:
+            assert isinstance(project_models_cfg, dict), (
+                f"'models.dbt_project' should be a mapping; got: {type(project_models_cfg).__name__}"
+            )
+            assert "raw_vault" in project_models_cfg, (
+                f"Expected 'models.dbt_project.raw_vault' block, got: {list(project_models_cfg.keys())}"
+            )
+            assert "stage" in project_models_cfg, (
+                f"Expected 'models.dbt_project.stage' block, got: {list(project_models_cfg.keys())}"
+            )
+        else:
+            # If automate_dv is disabled, these blocks shouldn’t exist
+            assert "raw_vault" not in project_models_cfg, (
+                "'models.dbt_project.raw_vault' should not be present"
+            )
+            assert "stage" not in project_models_cfg, (
+                "'models.dbt_project.stage' should not be present"
+            )
+
         # ---- on-run-end hook ----
         if with_artifacts:
             expected_hook = ["{{ dbt_artifacts.upload_results(results) }}"]
@@ -418,6 +439,40 @@ def assert_dbt_project_yaml() -> Callable[[Path], None]:
             assert "on-run-end" not in data_raw, (
                 "Unexpected 'on-run-end' when artifacts are disabled"
             )
+
+    return _assert
+
+
+@pytest.fixture
+def assert_model_folders() -> Callable[[Path], None]:
+    def _assert(
+        project_dir: Path,
+        *,
+        with_automate_dv: bool,
+    ) -> None:
+        models_dir = project_dir / "src" / "models"
+        raw_vault_dir = models_dir / "raw_vault"
+        stage_dir = models_dir / "stage"
+
+        if with_automate_dv:
+            assert raw_vault_dir.exists(), f"Expected to find: {raw_vault_dir}"
+            assert raw_vault_dir.is_dir(), f"Expected a directory: {raw_vault_dir}"
+            assert stage_dir.exists(), f"Expected to find: {stage_dir}"
+            assert stage_dir.is_dir(), f"Expected a directory: {stage_dir}"
+        else:
+            assert not raw_vault_dir.exists(), (
+                f"Did not expect to find: {raw_vault_dir}"
+            )
+            assert not stage_dir.exists(), f"Did not expect to find: {stage_dir}"
+
+            # And no sub-directories should exist within src/models
+            if models_dir.exists():
+                unexpected_dirs = [p for p in models_dir.iterdir() if p.is_dir()]
+                assert not unexpected_dirs, (
+                    "Did not expect any subdirectories in "
+                    f"{models_dir}, but found: "
+                    f"{', '.join(str(p) for p in unexpected_dirs)}"
+                )
 
     return _assert
 

@@ -71,6 +71,38 @@ models:
     +persist_docs:
       relation: true
       columns: true
+[%- if with_automate_dv %]
+
+    raw_vault:
+      +materialized: incremental
+      +tags:
+        - 'raw_vault'
+      hubs:
+        +tags:
+          - 'hub'
+        # Enforce data contract checks for Raw Vault Hubs
+        +on_schema_change: fail
+        +contract:
+          enforced: true
+      links:
+        +tags:
+          - 'link'
+        # Enforce data contract checks for Raw Vault Links
+        +on_schema_change: fail
+        +contract:
+          enforced: true
+      sats:
+        +tags:
+          - 'satellite'
+
+    stage:
+      +schema: private
+      +materialized: view
+      +tags:
+        - 'stage'
+      +contract:
+        enforced: true
+[%- endif %]
 
 on-run-start:
   - "{{ log_project_version() }}"

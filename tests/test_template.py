@@ -9,6 +9,7 @@ def test_template_configurations(
     assert_answers,
     assert_packages_yaml,
     assert_dbt_project_yaml,
+    assert_model_folders,
 ):
     (
         name,
@@ -43,5 +44,10 @@ def test_template_configurations(
     assert_dbt_project_yaml(
         result.project_dir,
         with_artifacts=with_artifacts,
+        with_automate_dv=with_automate_dv,
+    )
+
+    assert_model_folders(
+        result.project_dir,
         with_automate_dv=with_automate_dv,
     )
