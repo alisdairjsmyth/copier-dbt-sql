@@ -9,6 +9,25 @@
 
 - include changelog in github release
 
+## [0.27.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.26.0...v0.27.0) (2026-02-06)
+
+
+### 🚀 New Features
+
+* incorporate standard automate_dv model folders ([a93c42b](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/a93c42bbe1a8c079a42f144cf8d781b81adeb923)), closes [#122](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/122)
+
+
+### 🐛 Bug Fixes
+
+* add dbt flags to suppress warnings ([65a87f2](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/65a87f271694d18c3c5379b9a3f6c3c4fe89fe30))
+* dummy ([#128](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/128)) ([8399e30](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/8399e301571762b3905fcd70d94d666211d39fc2))
+* overwrite pytest report on pr ([#126](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/126)) ([217056b](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/217056bf497376fa387616ac1898b0edadb82d96))
+
+
+### ⚙️ Maintenance
+
+* verify automate_dv feature ([#124](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/124)) ([97c13b5](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/97c13b5f2397a13928d78d68443122c020ebd526))
+
 ## [0.26.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.25.3...v0.26.0) (2026-02-04)
 
 
