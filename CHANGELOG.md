@@ -9,6 +9,13 @@
 
 - include changelog in github release
 
+## [0.27.1](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.27.0...v0.27.1) (2026-02-06)
+
+
+### 🐛 Bug Fixes
+
+* labelling of release-please pr ([#129](https://github.com/alisdairjsmyth/copier-dbt-sql/issues/129)) ([d4f842f](https://github.com/alisdairjsmyth/copier-dbt-sql/commit/d4f842f653dc5a65558ba30e06ba09190bea209d))
+
 ## [0.27.0](https://github.com/alisdairjsmyth/copier-dbt-sql/compare/v0.26.0...v0.27.0) (2026-02-06)
 
 
