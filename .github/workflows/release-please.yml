@@ -69,20 +69,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v6
 
-      - name: Find PR(s) for commit
+      - uses: jwalton/gh-find-current-pr@master
         id: prs-for-commit
-        uses: actions/github-script@v8
-        env:
-          SHA: ${{ needs.release-please.outputs.sha }}
         with:
-          script: |
-            const {owner, repo} = context.repo;
-            const sha = process.env.SHA;
-            const res = await github.request('GET /repos/{owner}/{repo}/commits/{ref}/pulls', {
-                owner, repo, ref: sha
-            });
-            const numbers = res.data.map(pr => pr.number);
-            core.setOutput('numbers', JSON.stringify(numbers));
+          sha: ${{ needs.release-please.outputs.sha }}
+          state: all
 
       - name: Add label to PR
         uses: actions-ecosystem/action-add-labels@v1
